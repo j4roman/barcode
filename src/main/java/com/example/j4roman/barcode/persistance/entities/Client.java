@@ -1,5 +1,8 @@
 package com.example.j4roman.barcode.persistance.entities;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -58,6 +61,7 @@ public class Client implements Serializable {
     }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "client")
+    @Cascade({CascadeType.SAVE_UPDATE, CascadeType.DELETE, CascadeType.MERGE})
     public Set<Client2algorithm> getClient2algorithms() {
         return client2algorithms;
     }

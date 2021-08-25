@@ -47,4 +47,18 @@ public class BCAlgorithmDAOImpl extends GenericDAOImpl<BCAlgorithm, Long> implem
     public List<BCAlgorithm> getAll() {
         return super.findAll(BCAlgorithm.class);
     }
+
+    @Override
+    public List<BCAlgorithm> getByNames(List<String> names) {
+        Session hibernateSession = null;
+        try {
+            hibernateSession = sessionFactory.getCurrentSession();
+            Query<BCAlgorithm> query = hibernateSession.createQuery("from BCAlgorithm as alg where alg.name in :names");
+            query.setParameter("names", names);
+            List<BCAlgorithm> algorithms = query.list();
+            return algorithms;
+        } catch(HibernateException e) {
+            throw new DAOException(e);
+        }
+    }
 }

@@ -1,14 +1,14 @@
-package com.example.j4roman.barcode.controller.api;
+package com.example.j4roman.barcode.service.dto;
 
 import com.example.j4roman.barcode.controller.utils.BCCheckNotEmptyAndNull;
 import com.example.j4roman.barcode.controller.utils.BCCheckNotNull;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = false)
-public class ActionRequest {
-    @BCCheckNotEmptyAndNull(requestMethods = {AlgorithmRequest.REQUEST_METHOD_CREATE, AlgorithmRequest.REQUEST_METHOD_UPDATE})
+public class ActionDTO {
+    @BCCheckNotEmptyAndNull(requestMethods = {AlgorithmDTO.REQUEST_METHOD_CREATE, AlgorithmDTO.REQUEST_METHOD_UPDATE})
     private String task;
-    @BCCheckNotNull(requestMethods = AlgorithmRequest.REQUEST_METHOD_CREATE)
+    @BCCheckNotNull(requestMethods = AlgorithmDTO.REQUEST_METHOD_CREATE)
     private Long orderNum;
     private Long ind1;
     private Long ind2;

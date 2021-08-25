@@ -12,4 +12,5 @@ public interface BCAlgorithmDAO extends GenericDAO<BCAlgorithm, Long> {
     BCAlgorithm getByName(String name);
     void delete(BCAlgorithm algorithm);
     List<BCAlgorithm> getAll();
+    List<BCAlgorithm> getByNames(List<String> names);
 }

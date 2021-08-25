@@ -3,12 +3,12 @@ package com.example.j4roman.barcode.persistance.dao.exceptions;
 import java.util.Arrays;
 import java.util.List;
 
-public class EntityNotExistException extends DAOException {
+public class EntityDoesNotExistException extends DAOException {
 
     private List<String> values;
 
-    public EntityNotExistException(String... values) {
-        super("The entity with values " + Arrays.asList(values) + " does not exist");
+    public EntityDoesNotExistException(String... values) {
+        super("The entity with value(s) " + Arrays.asList(values) + " does not exist");
         this.values = Arrays.asList(values);
     }
 

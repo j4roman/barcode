@@ -10,7 +10,5 @@ import java.util.Collection;
 @Repository
 public interface ActionDAO extends GenericDAO<Action, Long> {
 
-    void create(Action entity);
-
     void deleteByAlgorithm(BCAlgorithm algorithm);
 }

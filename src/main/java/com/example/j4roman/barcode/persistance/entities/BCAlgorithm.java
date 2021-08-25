@@ -62,7 +62,7 @@ public class BCAlgorithm implements Serializable {
     }
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "bcAlgorithm")
-    @Cascade({CascadeType.SAVE_UPDATE, CascadeType.DELETE})
+    @Cascade({CascadeType.SAVE_UPDATE, CascadeType.DELETE, CascadeType.MERGE})
     public Set<Action> getActions() {
         return this.actions;
     }

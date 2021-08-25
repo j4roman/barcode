@@ -46,7 +46,7 @@ public class Client2algorithm implements Serializable {
         this.bcAlgorithm = bcAlgorithm;
     }
 
-    @Column(name = "specValue", nullable = false, length = 15)
+    @Column(name = "spec_value", nullable = false, length = 15)
     public String getSpecValue() {
         return specValue;
     }

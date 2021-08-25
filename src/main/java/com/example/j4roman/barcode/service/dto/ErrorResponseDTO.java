@@ -1,21 +1,21 @@
-package com.example.j4roman.barcode.controller.api;
+package com.example.j4roman.barcode.service.dto;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-public class ErrorResponse {
+public class ErrorResponseDTO {
 
     private String errorCode;
     private String errorDescr;
     private String errorTrace;
 
-    public ErrorResponse(String errorCode, Throwable e) {
+    public ErrorResponseDTO(String errorCode, Throwable e) {
         this.errorCode = errorCode;
         this.errorDescr = e.getClass().getSimpleName() + " : " + e.getMessage();
         this.errorTrace = getStackTrace(e);
     }
 
-    public ErrorResponse(String errorCode, String description, Throwable e) {
+    public ErrorResponseDTO(String errorCode, String description, Throwable e) {
         this.errorCode = errorCode;
         this.errorDescr = description;
         this.errorTrace = getStackTrace(e);

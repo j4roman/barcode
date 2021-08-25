@@ -8,7 +8,7 @@ public class EntityAlreadyExistsException extends DAOException {
     private List<String> values;
 
     public EntityAlreadyExistsException(String... values) {
-        super("The entity with values " + Arrays.asList(values) + " already exists");
+        super("The entity with value(s) " + Arrays.asList(values) + " already exists");
         this.values = Arrays.asList(values);
     }
 

@@ -1,13 +1,14 @@
 package com.example.j4roman.barcode.service;
 
+import com.example.j4roman.barcode.service.dto.AlgorithmDTO;
 import com.example.j4roman.barcode.persistance.entities.BCAlgorithm;
 
 import java.util.List;
 
 public interface BCAlgorithmService {
-    void create(BCAlgorithm bcAlgorithm);
-    BCAlgorithm update(BCAlgorithm bcAlgorithm);
-    boolean deleteByName(String name);
-    BCAlgorithm getByName(String name);
-    List<BCAlgorithm> getAll();
+    AlgorithmDTO create(AlgorithmDTO bcAlgorithm);
+    AlgorithmDTO update(AlgorithmDTO algorithm);
+    void deleteByName(String name);
+    AlgorithmDTO getByName(String name);
+    List<AlgorithmDTO> getAll();
 }

@@ -1,15 +1,15 @@
-package com.example.j4roman.barcode.controller.api;
+package com.example.j4roman.barcode.service.dto;
 
 import java.util.List;
 
-public class AlgorithmsList {
+public class AlgorithmsListResponseDTO {
     private Long count;
-    private List<AlgorithmRequest> items;
+    private List<AlgorithmDTO> items;
 
-    public AlgorithmsList() {
+    public AlgorithmsListResponseDTO() {
     }
 
-    public AlgorithmsList(List<AlgorithmRequest> items) {
+    public AlgorithmsListResponseDTO(List<AlgorithmDTO> items) {
         this.count = (long)items.size();
         this.items = items;
     }
@@ -22,11 +22,11 @@ public class AlgorithmsList {
         this.count = count;
     }
 
-    public List<AlgorithmRequest> getItems() {
+    public List<AlgorithmDTO> getItems() {
         return items;
     }
 
-    public void setItems(List<AlgorithmRequest> items) {
+    public void setItems(List<AlgorithmDTO> items) {
         this.items = items;
     }
 }

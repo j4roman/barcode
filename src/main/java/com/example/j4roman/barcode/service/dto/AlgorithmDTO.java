@@ -1,15 +1,14 @@
-package com.example.j4roman.barcode.controller.api;
+package com.example.j4roman.barcode.service.dto;
 
 import com.example.j4roman.barcode.controller.utils.BCCheckList;
 import com.example.j4roman.barcode.controller.utils.BCCheckNotEmptyAndNull;
 import com.example.j4roman.barcode.controller.utils.BCCheckNotNull;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = false)
-public class AlgorithmRequest {
+public class AlgorithmDTO {
 
     public static final String REQUEST_METHOD_CREATE = "create";
     public static final String REQUEST_METHOD_UPDATE = "update";
@@ -24,9 +23,9 @@ public class AlgorithmRequest {
 
     @BCCheckNotNull(requestMethods = REQUEST_METHOD_CREATE)
     @BCCheckList(fieldName = "actions")
-    private List<ActionRequest> actions;
+    private List<ActionDTO> actions;
 
-    public AlgorithmRequest() {
+    public AlgorithmDTO() {
     }
 
     public String getName() {
@@ -53,11 +52,11 @@ public class AlgorithmRequest {
         this.description = description;
     }
 
-    public List<ActionRequest> getActions() {
+    public List<ActionDTO> getActions() {
         return actions;
     }
 
-    public void setActions(List<ActionRequest> actions) {
+    public void setActions(List<ActionDTO> actions) {
         this.actions = actions;
     }
 }
