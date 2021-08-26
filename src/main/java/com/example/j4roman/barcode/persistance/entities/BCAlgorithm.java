@@ -15,7 +15,8 @@ public class BCAlgorithm implements Serializable {
 
     private Long id;
     private String name;
-    private String pattern;
+    private String inPattern;
+    private String outPattern;
     private String description;
     private Set<Action> actions = new HashSet<>(0);
     private Set<Client2algorithm> client2algorithms = new HashSet<>(0);
@@ -43,13 +44,22 @@ public class BCAlgorithm implements Serializable {
         this.name = name;
     }
 
-    @Column(name = "pattern", nullable = false, length = 30)
-    public String getPattern() {
-        return pattern;
+    @Column(name = "in_pattern", nullable = false, length = 30)
+    public String getInPattern() {
+        return inPattern;
     }
 
-    public void setPattern(String pattern) {
-        this.pattern = pattern;
+    public void setInPattern(String inPattern) {
+        this.inPattern = inPattern;
+    }
+
+    @Column(name = "out_pattern", nullable = false, length = 30)
+    public String getOutPattern() {
+        return outPattern;
+    }
+
+    public void setOutPattern(String outPattern) {
+        this.outPattern = outPattern;
     }
 
     @Column(name = "description", nullable = true, length = 200)
@@ -85,7 +95,8 @@ public class BCAlgorithm implements Serializable {
         final StringBuilder sb = new StringBuilder("BCAlgorithm{");
         sb.append("id=").append(id);
         sb.append(", name='").append(name).append('\'');
-        sb.append(", pattern='").append(pattern).append('\'');
+        sb.append(", inPattern='").append(inPattern).append('\'');
+        sb.append(", outPattern='").append(outPattern).append('\'');
         sb.append(", description='").append(description).append('\'');
         sb.append(", actions=").append(actions);
         sb.append(", client2algorithms=").append(client2algorithms);

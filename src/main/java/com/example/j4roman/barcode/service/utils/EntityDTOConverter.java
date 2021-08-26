@@ -13,12 +13,16 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * This class contains static methods to convert DTO into DB entity and vice versa
+ */
 public final class EntityDTOConverter {
 
     public static BCAlgorithm convert(AlgorithmDTO algorithmReq) {
         final BCAlgorithm bcAlgorithm = new BCAlgorithm();
         bcAlgorithm.setName(algorithmReq.getName().toUpperCase());
-        bcAlgorithm.setPattern(algorithmReq.getPattern());
+        bcAlgorithm.setInPattern(algorithmReq.getInPattern());
+        bcAlgorithm.setOutPattern(algorithmReq.getOutPattern());
         bcAlgorithm.setDescription(algorithmReq.getDescription());
         if (algorithmReq.getActions() != null && !algorithmReq.getActions().isEmpty()) {
             bcAlgorithm.getActions().addAll(
@@ -46,7 +50,8 @@ public final class EntityDTOConverter {
     public static AlgorithmDTO convert(BCAlgorithm algorithm) {
         AlgorithmDTO algorithmReq = new AlgorithmDTO();
         algorithmReq.setName(algorithm.getName());
-        algorithmReq.setPattern(algorithm.getPattern());
+        algorithmReq.setInPattern(algorithm.getInPattern());
+        algorithmReq.setOutPattern(algorithm.getOutPattern());
         algorithmReq.setDescription(algorithm.getDescription());
         algorithmReq.setActions(new ArrayList<>(
                 algorithm.getActions()

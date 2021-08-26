@@ -17,7 +17,10 @@ public class AlgorithmDTO {
     private String name;
 
     @BCCheckNotEmptyAndNull(requestMethods = REQUEST_METHOD_CREATE)
-    private String pattern;
+    private String inPattern;
+
+    @BCCheckNotEmptyAndNull(requestMethods = REQUEST_METHOD_CREATE)
+    private String outPattern;
 
     private String description;
 
@@ -36,12 +39,20 @@ public class AlgorithmDTO {
         this.name = name;
     }
 
-    public String getPattern() {
-        return pattern;
+    public String getInPattern() {
+        return inPattern;
     }
 
-    public void setPattern(String pattern) {
-        this.pattern = pattern;
+    public void setInPattern(String inPattern) {
+        this.inPattern = inPattern;
+    }
+
+    public String getOutPattern() {
+        return outPattern;
+    }
+
+    public void setOutPattern(String outPattern) {
+        this.outPattern = outPattern;
     }
 
     public String getDescription() {

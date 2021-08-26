@@ -1,8 +1,7 @@
 package com.example.j4roman.barcode.persistance.dao.impl;
 
 import com.example.j4roman.barcode.persistance.dao.BCAlgorithmDAO;
-import com.example.j4roman.barcode.persistance.dao.exceptions.DAOException;
-import com.example.j4roman.barcode.persistance.entities.Action;
+import com.example.j4roman.barcode.service.exceptions.DAOException;
 import com.example.j4roman.barcode.persistance.entities.BCAlgorithm;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -26,16 +25,11 @@ public class BCAlgorithmDAOImpl extends GenericDAOImpl<BCAlgorithm, Long> implem
 
     @Override
     public BCAlgorithm getByName(String name) {
-        Session hibernateSession = null;
-        try {
-            hibernateSession = sessionFactory.getCurrentSession();
-            Query<BCAlgorithm> query = hibernateSession.createQuery("from BCAlgorithm as alg where alg.name = :name");
-            query.setParameter("name", name);
-            BCAlgorithm algorithm = query.uniqueResult();
-            return algorithm;
-        } catch(HibernateException e) {
-            throw new DAOException(e);
-        }
+        Session hibernateSession = sessionFactory.getCurrentSession();
+        Query<BCAlgorithm> query = hibernateSession.createQuery("from BCAlgorithm as alg where alg.name = :name");
+        query.setParameter("name", name);
+        BCAlgorithm algorithm = query.uniqueResult();
+        return algorithm;
     }
 
     @Override
@@ -50,15 +44,10 @@ public class BCAlgorithmDAOImpl extends GenericDAOImpl<BCAlgorithm, Long> implem
 
     @Override
     public List<BCAlgorithm> getByNames(List<String> names) {
-        Session hibernateSession = null;
-        try {
-            hibernateSession = sessionFactory.getCurrentSession();
-            Query<BCAlgorithm> query = hibernateSession.createQuery("from BCAlgorithm as alg where alg.name in :names");
-            query.setParameter("names", names);
-            List<BCAlgorithm> algorithms = query.list();
-            return algorithms;
-        } catch(HibernateException e) {
-            throw new DAOException(e);
-        }
+        Session hibernateSession = sessionFactory.getCurrentSession();
+        Query<BCAlgorithm> query = hibernateSession.createQuery("from BCAlgorithm as alg where alg.name in :names");
+        query.setParameter("names", names);
+        List<BCAlgorithm> algorithms = query.list();
+        return algorithms;
     }
 }

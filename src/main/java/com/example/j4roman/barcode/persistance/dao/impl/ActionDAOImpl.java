@@ -1,7 +1,7 @@
 package com.example.j4roman.barcode.persistance.dao.impl;
 
 import com.example.j4roman.barcode.persistance.dao.ActionDAO;
-import com.example.j4roman.barcode.persistance.dao.exceptions.DAOException;
+import com.example.j4roman.barcode.service.exceptions.DAOException;
 import com.example.j4roman.barcode.persistance.entities.Action;
 import com.example.j4roman.barcode.persistance.entities.BCAlgorithm;
 import org.hibernate.HibernateException;
@@ -19,14 +19,9 @@ public class ActionDAOImpl extends GenericDAOImpl<Action, Long> implements Actio
 
     @Override
     public void deleteByAlgorithm(BCAlgorithm algorithm) {
-        Session hibernateSession = null;
-        try {
-            hibernateSession = sessionFactory.getCurrentSession();
-            Query deleteQuery = hibernateSession.createQuery("delete from Action as act where act.bcAlgorithm = :bcAlgorithm");
-            deleteQuery.setParameter("bcAlgorithm", algorithm);
-            deleteQuery.executeUpdate();
-        } catch(HibernateException e) {
-            throw new DAOException(e);
-        }
+        Session hibernateSession = sessionFactory.getCurrentSession();
+        Query deleteQuery = hibernateSession.createQuery("delete from Action as act where act.bcAlgorithm = :bcAlgorithm");
+        deleteQuery.setParameter("bcAlgorithm", algorithm);
+        deleteQuery.executeUpdate();
     }
 }

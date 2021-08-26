@@ -10,5 +10,9 @@ import java.util.Collection;
 @Repository
 public interface ActionDAO extends GenericDAO<Action, Long> {
 
+    /**
+     * The method deletes all Actions associated with given <code>algorithm</code>
+     * @param algorithm algorithm which actions should be deleted
+     */
     void deleteByAlgorithm(BCAlgorithm algorithm);
 }

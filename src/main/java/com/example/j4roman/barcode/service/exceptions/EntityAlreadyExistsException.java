@@ -1,4 +1,4 @@
-package com.example.j4roman.barcode.persistance.dao.exceptions;
+package com.example.j4roman.barcode.service.exceptions;
 
 import java.util.Arrays;
 import java.util.List;
