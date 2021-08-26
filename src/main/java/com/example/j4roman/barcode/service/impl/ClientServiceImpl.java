@@ -9,8 +9,8 @@ import com.example.j4roman.barcode.persistance.entities.BCAlgorithm;
 import com.example.j4roman.barcode.persistance.entities.Client;
 import com.example.j4roman.barcode.persistance.entities.Client2algorithm;
 import com.example.j4roman.barcode.service.ClientService;
-import com.example.j4roman.barcode.service.dto.Client2algorithmDTO;
-import com.example.j4roman.barcode.service.dto.ClientDTO;
+import com.example.j4roman.barcode.service.dto.manage.Client2algorithmDTO;
+import com.example.j4roman.barcode.service.dto.manage.ClientDTO;
 import com.example.j4roman.barcode.service.utils.EntityDTOConverter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -39,7 +39,8 @@ public class ClientServiceImpl implements ClientService {
     @Override
     @Transactional(timeout = DB_CALL_TIMEOUT)
     public ClientDTO create(ClientDTO clientReq) {
-        Client foundClient = clientDAO.getByCode(clientReq.getCode());
+        String upperCode = clientReq.getCode().toUpperCase();
+        Client foundClient = clientDAO.getByCode(upperCode);
         if (foundClient == null) {
             // map with [algorithmName - algorithm] to bind client2algorithm with algorithms
             Map<String, BCAlgorithm> nameAlgorithmMap = new HashMap<>();
@@ -48,7 +49,7 @@ public class ClientServiceImpl implements ClientService {
                 List<BCAlgorithm> algorithms = bcAlgorithmDAO.getByNames(
                         clientReq.getAlgorithms()
                                 .stream()
-                                .map(clt -> clt.getAlgorithmName())
+                                .map(clt -> clt.getAlgorithmName().toUpperCase())
                                 .collect(Collectors.toList())
                 );
                 logger.debug("Found algorithms {}", algorithms);
@@ -56,12 +57,12 @@ public class ClientServiceImpl implements ClientService {
                 for (Client2algorithmDTO c2aDTO : clientReq.getAlgorithms()) {
                     Optional<BCAlgorithm> algorithmOpt = algorithms
                             .stream()
-                            .filter(alg -> alg.getName().equals(c2aDTO.getAlgorithmName()))
+                            .filter(alg -> alg.getName().equals(c2aDTO.getAlgorithmName().toUpperCase()))
                             .findFirst();
                     if (algorithmOpt.isPresent()) {
-                        nameAlgorithmMap.put(c2aDTO.getAlgorithmName(), algorithmOpt.get());
+                        nameAlgorithmMap.put(c2aDTO.getAlgorithmName().toUpperCase(), algorithmOpt.get());
                     } else {
-                        throw new EntityDoesNotExistException(c2aDTO.getAlgorithmName());
+                        throw new EntityDoesNotExistException(c2aDTO.getAlgorithmName().toUpperCase());
                     }
                 }
             }
@@ -69,7 +70,7 @@ public class ClientServiceImpl implements ClientService {
             clientDAO.create(newClient);
             return EntityDTOConverter.convert(newClient);
         } else {
-            throw new EntityAlreadyExistsException(clientReq.getCode());
+            throw new EntityAlreadyExistsException(upperCode);
         }
     }
 
@@ -77,7 +78,8 @@ public class ClientServiceImpl implements ClientService {
     @Override
     @Transactional(timeout = DB_CALL_TIMEOUT)
     public ClientDTO update(ClientDTO clientReq) {
-        final Client foundClient = clientDAO.getByCode(clientReq.getCode());
+        String upperCode = clientReq.getCode().toUpperCase();
+        final Client foundClient = clientDAO.getByCode(upperCode);
         if (foundClient != null) {
             boolean isUpd = false;
             if (clientReq.getName() != null) {
@@ -95,7 +97,7 @@ public class ClientServiceImpl implements ClientService {
                     List<BCAlgorithm> algorithms = bcAlgorithmDAO.getByNames(
                             clientReq.getAlgorithms()
                                     .stream()
-                                    .map(clt -> clt.getAlgorithmName())
+                                    .map(clt -> clt.getAlgorithmName().toUpperCase())
                                     .collect(Collectors.toList())
                     );
                     logger.debug("Found algorithms {}", algorithms);
@@ -104,12 +106,12 @@ public class ClientServiceImpl implements ClientService {
                     for (Client2algorithmDTO c2aDTO : clientReq.getAlgorithms()) {
                         Optional<BCAlgorithm> algorithmOpt = algorithms
                                 .stream()
-                                .filter(alg -> alg.getName().equals(c2aDTO.getAlgorithmName()))
+                                .filter(alg -> alg.getName().equals(c2aDTO.getAlgorithmName().toUpperCase()))
                                 .findFirst();
                         if (algorithmOpt.isPresent()) {
                             newClient2Algs.add(EntityDTOConverter.convert(c2aDTO, foundClient, algorithmOpt.get()));
                         } else {
-                            throw new EntityDoesNotExistException(c2aDTO.getAlgorithmName());
+                            throw new EntityDoesNotExistException(c2aDTO.getAlgorithmName().toUpperCase());
                         }
                     }
                     foundClient.setClient2algorithms(newClient2Algs);
@@ -123,29 +125,31 @@ public class ClientServiceImpl implements ClientService {
             }
             return EntityDTOConverter.convert(foundClient);
         } else {
-            throw new EntityDoesNotExistException(clientReq.getName());
+            throw new EntityDoesNotExistException(upperCode);
         }
     }
 
     @Override
     @Transactional(timeout = DB_CALL_TIMEOUT)
     public void deleteByCode(String code) {
-        Client foundClient = clientDAO.getByCode(code);
+        String upperCode = code.toUpperCase();
+        Client foundClient = clientDAO.getByCode(upperCode);
         if (foundClient != null) {
             clientDAO.delete(foundClient);
         } else {
-            throw new EntityDoesNotExistException(code);
+            throw new EntityDoesNotExistException(upperCode);
         }
     }
 
     @Override
     @Transactional(timeout = DB_CALL_TIMEOUT)
     public ClientDTO getByCode(String code) {
-        Client foundClient = clientDAO.getByCode(code);
+        String upperCode = code.toUpperCase();
+        Client foundClient = clientDAO.getByCode(upperCode);
         if (foundClient != null) {
-            return EntityDTOConverter.convert(clientDAO.getByCode(code));
+            return EntityDTOConverter.convert(foundClient);
         } else {
-            throw new EntityDoesNotExistException(code);
+            throw new EntityDoesNotExistException(upperCode);
         }
     }
 

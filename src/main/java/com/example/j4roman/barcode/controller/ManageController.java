@@ -1,13 +1,11 @@
 package com.example.j4roman.barcode.controller;
 
 import com.example.j4roman.barcode.service.ClientService;
-import com.example.j4roman.barcode.service.dto.AlgorithmDTO;
-import com.example.j4roman.barcode.service.dto.AlgorithmsListResponseDTO;
-import com.example.j4roman.barcode.service.dto.ClientDTO;
+import com.example.j4roman.barcode.service.dto.manage.AlgorithmDTO;
+import com.example.j4roman.barcode.service.dto.manage.AlgorithmsListResponseDTO;
+import com.example.j4roman.barcode.service.dto.manage.ClientDTO;
 import com.example.j4roman.barcode.controller.utils.BCValidator;
-import com.example.j4roman.barcode.service.dto.ClientsListResponseDTO;
-import com.example.j4roman.barcode.service.utils.EntityDTOConverter;
-import com.example.j4roman.barcode.persistance.entities.BCAlgorithm;
+import com.example.j4roman.barcode.service.dto.manage.ClientsListResponseDTO;
 import com.example.j4roman.barcode.service.BCAlgorithmService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

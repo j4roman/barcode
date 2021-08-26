@@ -1,6 +1,8 @@
 package com.example.j4roman.barcode.service.impl;
 
-import com.example.j4roman.barcode.service.dto.AlgorithmDTO;
+import com.example.j4roman.barcode.service.dto.ToBarcodeRequestDTO;
+import com.example.j4roman.barcode.service.dto.ToBarcodeResponseDTO;
+import com.example.j4roman.barcode.service.dto.manage.AlgorithmDTO;
 import com.example.j4roman.barcode.persistance.dao.ActionDAO;
 import com.example.j4roman.barcode.persistance.dao.BCAlgorithmDAO;
 import com.example.j4roman.barcode.persistance.dao.exceptions.EntityAlreadyExistsException;
@@ -36,13 +38,14 @@ public class BCAlgorithmServiceImpl implements BCAlgorithmService {
     @Override
     @Transactional(timeout = DB_CALL_TIMEOUT)
     public AlgorithmDTO create(AlgorithmDTO algorithmDTO) {
-        BCAlgorithm foundAlgorithm = bcAlgorithmDAO.getByName(algorithmDTO.getName());
+        String upperName = algorithmDTO.getName().toUpperCase();
+        BCAlgorithm foundAlgorithm = bcAlgorithmDAO.getByName(upperName);
         if (foundAlgorithm == null) {
             BCAlgorithm bcAlgorithm = EntityDTOConverter.convert(algorithmDTO);
             bcAlgorithmDAO.create(bcAlgorithm);
             return EntityDTOConverter.convert(bcAlgorithm);
         } else {
-            throw new EntityAlreadyExistsException(algorithmDTO.getName());
+            throw new EntityAlreadyExistsException(upperName);
         }
     }
 
@@ -50,7 +53,8 @@ public class BCAlgorithmServiceImpl implements BCAlgorithmService {
     @Transactional(timeout = DB_CALL_TIMEOUT)
     public AlgorithmDTO update(AlgorithmDTO algorithmDTO) {
         logger.debug("Attempt to update with data {}", algorithmDTO.toString());
-        final BCAlgorithm foundAlgorithm = bcAlgorithmDAO.getByName(algorithmDTO.getName());
+        String upperName = algorithmDTO.getName().toUpperCase();
+        final BCAlgorithm foundAlgorithm = bcAlgorithmDAO.getByName(upperName);
         if (foundAlgorithm != null) {
             logger.debug("Found algorithm {}", foundAlgorithm.toString());
             boolean isUpd = false;
@@ -78,29 +82,31 @@ public class BCAlgorithmServiceImpl implements BCAlgorithmService {
             }
             return EntityDTOConverter.convert(foundAlgorithm);
         } else {
-            throw new EntityDoesNotExistException(algorithmDTO.getName());
+            throw new EntityDoesNotExistException(upperName);
         }
     }
 
     @Override
     @Transactional
     public void deleteByName(String name) {
-        BCAlgorithm foundAlgorithm = bcAlgorithmDAO.getByName(name);
+        String upperName = name.toUpperCase();
+        BCAlgorithm foundAlgorithm = bcAlgorithmDAO.getByName(upperName);
         if (foundAlgorithm != null) {
             bcAlgorithmDAO.delete(foundAlgorithm);
         } else {
-            throw new EntityDoesNotExistException(name);
+            throw new EntityDoesNotExistException(upperName);
         }
     }
 
     @Override
     @Transactional
     public AlgorithmDTO getByName(String name) {
-        BCAlgorithm foundAlgorithm = bcAlgorithmDAO.getByName(name);
+        String upperName = name.toUpperCase();
+        BCAlgorithm foundAlgorithm = bcAlgorithmDAO.getByName(upperName);
         if (foundAlgorithm != null) {
             return EntityDTOConverter.convert(foundAlgorithm);
         } else {
-            throw new EntityDoesNotExistException(name);
+            throw new EntityDoesNotExistException(upperName);
         }
     }
 

@@ -1,4 +1,4 @@
-package com.example.j4roman.barcode.service.dto;
+package com.example.j4roman.barcode.service.dto.manage;
 
 import com.example.j4roman.barcode.controller.utils.BCCheckList;
 import com.example.j4roman.barcode.controller.utils.BCCheckNotEmptyAndNull;
@@ -13,7 +13,7 @@ public class AlgorithmDTO {
     public static final String REQUEST_METHOD_CREATE = "create";
     public static final String REQUEST_METHOD_UPDATE = "update";
 
-    @BCCheckNotEmptyAndNull(requestMethods = {REQUEST_METHOD_CREATE, REQUEST_METHOD_UPDATE})
+    @BCCheckNotEmptyAndNull
     private String name;
 
     @BCCheckNotEmptyAndNull(requestMethods = REQUEST_METHOD_CREATE)

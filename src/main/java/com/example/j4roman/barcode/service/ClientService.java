@@ -1,8 +1,7 @@
 package com.example.j4roman.barcode.service;
 
-import com.example.j4roman.barcode.persistance.entities.Client;
-import com.example.j4roman.barcode.service.dto.AlgorithmDTO;
-import com.example.j4roman.barcode.service.dto.ClientDTO;
+import com.example.j4roman.barcode.service.dto.manage.ClientDTO;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 

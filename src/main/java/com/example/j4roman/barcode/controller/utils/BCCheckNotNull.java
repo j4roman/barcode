@@ -8,5 +8,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface BCCheckNotNull {
-    public String[] requestMethods();
+    public String[] requestMethods() default {};
 }

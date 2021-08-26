@@ -2,15 +2,14 @@ package com.example.j4roman.barcode.service.utils;
 
 import com.example.j4roman.barcode.persistance.entities.Client;
 import com.example.j4roman.barcode.persistance.entities.Client2algorithm;
-import com.example.j4roman.barcode.service.dto.ActionDTO;
-import com.example.j4roman.barcode.service.dto.AlgorithmDTO;
+import com.example.j4roman.barcode.service.dto.manage.ActionDTO;
+import com.example.j4roman.barcode.service.dto.manage.AlgorithmDTO;
 import com.example.j4roman.barcode.persistance.entities.Action;
 import com.example.j4roman.barcode.persistance.entities.BCAlgorithm;
-import com.example.j4roman.barcode.service.dto.Client2algorithmDTO;
-import com.example.j4roman.barcode.service.dto.ClientDTO;
+import com.example.j4roman.barcode.service.dto.manage.Client2algorithmDTO;
+import com.example.j4roman.barcode.service.dto.manage.ClientDTO;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -18,7 +17,7 @@ public final class EntityDTOConverter {
 
     public static BCAlgorithm convert(AlgorithmDTO algorithmReq) {
         final BCAlgorithm bcAlgorithm = new BCAlgorithm();
-        bcAlgorithm.setName(algorithmReq.getName());
+        bcAlgorithm.setName(algorithmReq.getName().toUpperCase());
         bcAlgorithm.setPattern(algorithmReq.getPattern());
         bcAlgorithm.setDescription(algorithmReq.getDescription());
         if (algorithmReq.getActions() != null && !algorithmReq.getActions().isEmpty()) {
@@ -34,7 +33,7 @@ public final class EntityDTOConverter {
 
     public static Action convert(ActionDTO actionReq, BCAlgorithm linkedAlgorithm) {
         Action action = new Action();
-        action.setTask(actionReq.getTask());
+        action.setTask(actionReq.getTask().toUpperCase());
         action.setOrderNum(actionReq.getOrderNum());
         action.setInd1(actionReq.getInd1());
         action.setInd2(actionReq.getInd2());
@@ -71,7 +70,7 @@ public final class EntityDTOConverter {
 
     public static Client convert(ClientDTO clientDTO, Map<String, BCAlgorithm> algorithmNameMap) {
         final Client client = new Client();
-        client.setCode(clientDTO.getCode());
+        client.setCode(clientDTO.getCode().toUpperCase());
         client.setName(clientDTO.getName());
         client.setDescription(clientDTO.getDescription());
         if (clientDTO.getAlgorithms() != null && !clientDTO.getAlgorithms().isEmpty() && !algorithmNameMap.isEmpty()) {

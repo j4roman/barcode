@@ -1,4 +1,4 @@
-package com.example.j4roman.barcode.service.dto;
+package com.example.j4roman.barcode.service.dto.manage;
 
 import java.util.List;
 

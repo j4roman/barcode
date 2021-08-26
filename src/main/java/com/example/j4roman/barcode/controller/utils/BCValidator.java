@@ -5,6 +5,10 @@ import java.util.*;
 
 public final class BCValidator {
 
+    public static void validate(Object obj) throws BCInvalidFieldFormatException {
+        validate(obj, "", null);
+    }
+
     public static void validate(Object obj, String requestMethod) throws BCInvalidFieldFormatException {
         validate(obj, requestMethod, null);
     }
@@ -17,7 +21,8 @@ public final class BCValidator {
                 field.setAccessible(true);
                 if (field.isAnnotationPresent(BCCheckNotEmptyAndNull.class)) {
                     BCCheckNotEmptyAndNull checkAnn = field.getDeclaredAnnotation(BCCheckNotEmptyAndNull.class);
-                    if (Arrays.asList(checkAnn.requestMethods()).contains(requestMethod)) {
+                    List<String> reqMethods = Arrays.asList(checkAnn.requestMethods());
+                    if (reqMethods.isEmpty() || reqMethods.contains(requestMethod)) {
                         Object fieldObj = field.get(obj);
                         if (fieldObj == null) {
                             result.add(objectName != null ? objectName + "." + field.getName() : field.getName());
@@ -35,7 +40,8 @@ public final class BCValidator {
                     }
                 } else if (field.isAnnotationPresent(BCCheckNotNull.class)) {
                     BCCheckNotNull checkAnn = field.getDeclaredAnnotation(BCCheckNotNull.class);
-                    if (Arrays.asList(checkAnn.requestMethods()).contains(requestMethod)) {
+                    List<String> reqMethods = Arrays.asList(checkAnn.requestMethods());
+                    if (reqMethods.isEmpty() || reqMethods.contains(requestMethod)) {
                         Object fieldObj = field.get(obj);
                         if (fieldObj == null) {
                             result.add(objectName != null ? objectName + "." + field.getName() : field.getName());
@@ -57,7 +63,7 @@ public final class BCValidator {
                 }
             }
         } catch(IllegalAccessException e) {
-            throw new RuntimeException(e);
+            throw new BCWrongAnnotationUseException(e);
         }
         if (!result.isEmpty()) {
             throw new BCInvalidFieldFormatException(result);

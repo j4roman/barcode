@@ -1,5 +1,6 @@
 package com.example.j4roman.barcode.persistance.dao;
 
+import com.example.j4roman.barcode.persistance.entities.BCAlgorithm;
 import com.example.j4roman.barcode.persistance.entities.Client;
 import org.springframework.stereotype.Repository;
 
@@ -12,4 +13,5 @@ public interface ClientDAO extends GenericDAO<Client, Long> {
     Client getByCode(String code);
     void delete(Client client);
     List<Client> getAll();
+    String getValueByClientAlgorithm(Client client, BCAlgorithm algorithm);
 }

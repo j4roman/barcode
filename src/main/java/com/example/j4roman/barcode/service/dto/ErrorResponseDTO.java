@@ -1,8 +1,11 @@
 package com.example.j4roman.barcode.service.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ErrorResponseDTO {
 
     private String errorCode;
