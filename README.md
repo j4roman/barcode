@@ -13,36 +13,43 @@ The *algorithm* contains the list of steps with tasks or *actions* to do to gene
 The *client* is linked with *algorithms* in relation of many-to-many.  
 Each *link* contains some additional *client* specific data for generation (it's just a number for now).  
 
-### Generating and parsing barcodes
+### Generating barcodes 
 So the *client* invokes the *generation* method with **value**s list and next things happen:
 1. The system checks that the *client* is allowed to use the *algorithm*.
 2. The system gets special data (the number) from *client* - *algorithm* relation.
 3. For every string in the list of **value**s:  
 3.1. The system tests **value**'s format.  
 3.2. The *algorithm* performs transformation steps with tasks or *action*s to generate **barcode** using:
-- **value**
-- *client*'s special data
-- *action*'s inner data
+     - **value**
+     - *client*'s special data
+     - *action*'s inner data
 4. Returns results list back to the caller. Each list's item contains either generated **barcode** or error description.
 
+### Parsing barcodes
 If the *client* invokes the *parse* method with **barcode**s list then steps are almost the same:
 1. (same) The system checks that the *client* is allowed to use the *algorithm*. 
 2. (same) The system gets special data (the number) from *client* - *algorithm* connection.
 3. For every string in the list of **barcode**s:  
 3.1. The system tests **barcode**'s format.  
 3.2. The *algorithm* performs transformation steps backwards with tasks or *actions* to parse **barcode** using:
-- **barcode**
-- *client*'s special data
-- *action*'s inner data  
+     - **barcode**
+     - *client*'s special data
+     - *action*'s inner data  
 3.3. The algorithm also validates **barcode**'s correctness:
-- tests **barcode**'s check number
-- *client*'s special data matches given **barcode**'s digits
-- *action*'s inner data matches given **barcode**'s digits  
+     - tests **barcode**'s check number
+     - *client*'s special data matches given **barcode**'s digits
+     - *action*'s inner data matches given **barcode**'s digits  
 (all these points depends on actual *algorithm*'s steps or *action*s)
 4. Returns results list back to the caller. Each list's item contains either parsed **value** or error description.
 
 ### Manage DB operations
-The Web-service also provides REST API to save *algorithm*s and *client*s data in DB.
+The Web-service also provides REST API to hold *algorithm*s and *client*s data in DB.
+
+## Database
+Tests on: `Oracle Database 12c Enterprise Edition Release 12.2.0.1.0 - 64bit Production`
+Database scripts: [barcode_db_scripts.sql](/misc/barcode_db_scripts.sql)
+
+![Database image](/misc/barcode_db_schema.jpg)
 
 ## Swagger
 The swagger can be viewed here [barcode.yaml](/misc/barcode.yaml)
@@ -95,12 +102,12 @@ Request:
 - *inPattern* - regular expression to test **value**s
 - *outPattern* - regular expression to test **beracode**s
 - *description* - description of algorithm
-- *actions* - list of steps or tasks to do transformation
+- *actions* - the list of steps or tasks to do transformation
 - *actions.task* - task identifier (or name, or code)
-- *actions.orderNum* - the order number of action.  
-Actions apply in the increasing order to generate the barcode and in the decreasing order to parse it back.
+- *actions.orderNum* - the order number of action
+Actions apply in the increasing order to generate the barcode and in the decreasing order to parse it back
 - *actions.ind1*, *actions.ind2*, *actions.count* - *action*'s inner data
-- *actions.description* - unnecessary action description. Should be replaced with generated description in the future.
+- *actions.description* - unnecessary action description. Should be replaced with generated description in the future
 
 
 The response body has the same structure as request.  
@@ -358,11 +365,48 @@ Response:
 
 Http-code for success response: `200 OK`
 
-## Database
-Tests on:  
-`Oracle Database 12c Enterprise Edition Release 12.2.0.1.0 - 64bit Production`
+### Error response
+Currently errors have structure:
+```
+{
+   "errorCode": "Barcode.Error.BadRequest.MalformedRequest",
+   "errorDescr": "HttpMessageNotReadableException : JSON parse error: Unexpected character ('2' (code 50)): was expecting double-quote to start field name; nested exception is com.fasterxml.jackson.core.JsonParseException: Unexpected character ('2' (code 50)): was expecting double-quote to start field name\n at [Source: (PushbackInputStream); line: 3, column: 25]",
+   "errorTrace": "org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Unexpected character ('2' (code 50)): was expecting double-quote to start field name; nested exception is com.fasterxml.jackson.core.JsonParseException: Unexpected character ('2' (code 50)): was expecting double-quote to start field name\n at [Source: (PushbackInputStream); line: 3, column: 25]\n\tat org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter.readJavaType(AbstractJackson2HttpMessageConverter.java:389)\n\tat org.springframework.http.converter.json.AbstractJackson2HttpMessageConverter.read(AbstractJackson2HttpMessageConverter.java:342)\n\tat ..."
+}
+```
+- *errorCode* - specific error code
+- *errorDescr* - description of error (exception)
+- *errorTrace* - trace of error (exception)
 
-Database schema:
-![Database image](/misc/barcode_db_schema.jpg)
+Http-code for responses: `400 Bad Request`, `404 Not Found`, `500 Internal Server Error`
 
-Database scripts: [barcode_db_scripts.sql](/misc/barcode_db_scripts.sql)
+Error handling will be chenged in the future.
+
+## TODO list
+- Rebuild error responses
+- Add request values validation: not only for "null"s and emptiness
+- Add algorithm data validation: test algorithm before saving in DB
+- Add security features: ip-address checking
+- Optimize some details:
+  - dynamically generate action's description
+  - change task function generating process
+
+## Used applications and frameworks
+
+### Java
+- Java Version: 1.8.0_301
+
+### Frameworks
+[pom.xml](pom.xml)
+
+- Spring Boot 2.5.3
+  - Web
+- Hibernate (Spring Boot)
+- Log4j2 (Spring Boot)
+
+### Applications
+- IntelliJ IDEA 2020.1 (Community Edition)
+- Oracle SQL Developer 19.2.1.247
+- SoaupUI 5.5.0
+- Docker 20.10.6
+- Apache Tomcat/9.0.50
