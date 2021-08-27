@@ -80,8 +80,8 @@ public class BarcodeServiceImpl implements BarcodeService {
                 String pattern = !isParse ? algorithm.getInPattern() : algorithm.getOutPattern();
                 // Test value for correct format
                 if (!value.matches(pattern)) {
-                    logger.info("Value {} doesn\'t match pattern {}", algUpperName, pattern);
-                    results.add(ToBarcodeResponseItemDTO.errorDoesntMatch(algUpperName, pattern));
+                    logger.info("Value {} doesn\'t match pattern {}", value, pattern);
+                    results.add(ToBarcodeResponseItemDTO.errorDoesntMatch(value, pattern));
                     continue;
                 }
                 try {

@@ -8,15 +8,15 @@ public class ToBarcodeResponseItemDTO {
     public static final String ERROR_DOESNT_MATCH_PATTERN = "Value [%s] doesn\'t match algorithm pattern [%s]";
     public static final String ERROR_UNEXPECTED = "Unexpected error occurs";
 
-    private String barcode;
+    private String generatedValue;
     private Status status;
     private String errorDescription;
 
     public ToBarcodeResponseItemDTO() {
     }
 
-    public ToBarcodeResponseItemDTO(String barcode, Status status, String errorDescription) {
-        this.barcode = barcode;
+    public ToBarcodeResponseItemDTO(String generatedValue, Status status, String errorDescription) {
+        this.generatedValue = generatedValue;
         this.status = status;
         this.errorDescription = errorDescription;
     }
@@ -25,8 +25,8 @@ public class ToBarcodeResponseItemDTO {
         return new ToBarcodeResponseItemDTO(null, Status.ERROR, errorDescription);
     }
 
-    public static ToBarcodeResponseItemDTO okResult(String barcode) {
-        return new ToBarcodeResponseItemDTO(barcode, Status.OK, null);
+    public static ToBarcodeResponseItemDTO okResult(String generatedValue) {
+        return new ToBarcodeResponseItemDTO(generatedValue, Status.OK, null);
     }
 
     public static ToBarcodeResponseItemDTO errorDoesntMatch(String value, String pattern) {
@@ -37,12 +37,12 @@ public class ToBarcodeResponseItemDTO {
         return errorDescr(ERROR_UNEXPECTED);
     }
 
-    public String getBarcode() {
-        return barcode;
+    public String getGeneratedValue() {
+        return generatedValue;
     }
 
-    public void setBarcode(String barcode) {
-        this.barcode = barcode;
+    public void setGeneratedValue(String generatedValue) {
+        this.generatedValue = generatedValue;
     }
 
     public Status getStatus() {

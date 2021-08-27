@@ -94,7 +94,7 @@ public final class CommonTasks {
                     };
                 }
             case CHKNUM1:
-                // calculates check number
+                // calculates check number and add it to the end
                 if (!isParse) {
                     return sbVal -> {
                         sbVal.append(calcCheckNum1(sbVal, sbVal.length()));
