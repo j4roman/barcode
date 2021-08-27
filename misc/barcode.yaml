@@ -1,0 +1,538 @@
+swagger: '2.0'
+info:
+  version: v10
+  title: BarCode
+basePath: /barcode/
+consumes:
+  - application/json
+produces:
+  - application/json
+tags:
+  - name: BarCode
+paths:
+  /manage/algorithm:
+    post:
+      tags:
+        - Algorithm
+      summary: Create generating algorithm
+      description: Creates the algorithm and corresponding actions to generate barcode (and parse it back)
+      operationId: createAlgorithm
+      parameters:
+        - name: body
+          in: body
+          description: Request body
+          required: true
+          schema:
+            $ref: '#/definitions/Algorithm'
+      responses:
+        '201':
+          description: The algorithm is successfully created
+          schema:
+            $ref: '#/definitions/Algorithm'
+        '400':
+          description: Malformed request body, validation failed or algorithm is already existed
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: Incorrect URL path or http-method
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected internal server error
+          schema:
+            $ref: '#/definitions/Error'
+    put:
+      tags:
+        - Algorithm
+      summary: Update generating algorithm
+      description: Updates the algorithm and corresponding actions
+      operationId: updateAlgorithm
+      parameters:
+        - name: body
+          in: body
+          description: Request body
+          required: true
+          schema:
+            $ref: '#/definitions/Algorithm'
+      responses:
+        '201':
+          description: The algorithm is successfully updated
+          schema:
+            $ref: '#/definitions/Algorithm'
+        '400':
+          description: Malformed request body, validation failed or the algorithm is not found
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: Incorrect URL path or http-method
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected internal server error
+          schema:
+            $ref: '#/definitions/Error'
+  /manage/algorithm/{name}:
+    delete:
+      tags:
+        - Algorithm
+      summary: Delete algorithm by name
+      description: Deletes the algorithm by name
+      operationId: deleteAlgorithmByName
+      parameters:
+        - name: name
+          in: path
+          description: name of algorithm to be deleted
+          required: true
+          type: string
+      responses:
+        '204':
+          description: The algorithm is successfully deleted
+        '400':
+          description: Malformed request body, validation failed or the algorithm is not found
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: Incorrect URL path or http-method
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected internal server error
+          schema:
+            $ref: '#/definitions/Error'
+    get:
+      tags:
+        - Algorithm
+      summary: Get algorithm by name
+      description: Gets the algorithm by name
+      operationId: getAlgorithmByName
+      parameters:
+        - name: name
+          in: path
+          description: name of algorithm to be found
+          required: true
+          type: string
+      responses:
+        '200':
+          description: The algorithm is successfully found
+          schema:
+            $ref: '#/definitions/Algorithm'
+        '400':
+          description: Malformed request body, validation failed or the algorithm is not found
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: Incorrect URL path or http-method
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected internal server error
+          schema:
+            $ref: '#/definitions/Error'
+  /manage/algorithms:
+    get:
+      tags:
+        - Algorithm
+      summary: Get all algorithms
+      description: Gets all algorithms
+      operationId: getAllAlgorithms
+      responses:
+        '200':
+          description: The list of all algorithms
+          schema:
+            $ref: '#/definitions/AlgorithmsList'
+        '400':
+          description: Malformed request body, validation failed
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: Incorrect URL path or http-method
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected internal server error
+          schema:
+            $ref: '#/definitions/Error'
+  /manage/client:
+    post:
+      tags:
+        - Client
+      summary: Create client
+      description: Creates the client and corresponding links to allowed algorithms plus special values
+      operationId: createClient
+      parameters:
+        - name: body
+          in: body
+          description: Request body
+          required: true
+          schema:
+            $ref: '#/definitions/Client'
+      responses:
+        '201':
+          description: The client is successfully created
+          schema:
+            $ref: '#/definitions/Client'
+        '400':
+          description: Malformed request body, validation failed or client is already existed
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: Incorrect URL path or http-method
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected internal server error
+          schema:
+            $ref: '#/definitions/Error'
+    put:
+      tags:
+        - Client
+      summary: Update client
+      description: Updates the client and allowed algorithms
+      operationId: updateClient
+      parameters:
+        - name: body
+          in: body
+          description: Request body
+          required: true
+          schema:
+            $ref: '#/definitions/Client'
+      responses:
+        '201':
+          description: The client is successfully updated
+          schema:
+            $ref: '#/definitions/Client'
+        '400':
+          description: Malformed request body, validation failed or the client is not found
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: Incorrect URL path or http-method
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected internal server error
+          schema:
+            $ref: '#/definitions/Error'
+  /manage/client/{code}:
+    delete:
+      tags:
+        - Client
+      summary: Delete client by code
+      description: Deletes the client by code
+      operationId: deleteClientByCode
+      parameters:
+        - name: code
+          in: path
+          description: code of the client to be deleted
+          required: true
+          type: string
+      responses:
+        '204':
+          description: The client is successfully deleted
+        '400':
+          description: Malformed request body, validation failed or the client is not found
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: Incorrect URL path or http-method
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected internal server error
+          schema:
+            $ref: '#/definitions/Error'
+    get:
+      tags:
+        - Client
+      summary: Get client by code
+      description: Gets the client by code
+      operationId: getClientByCode
+      parameters:
+        - name: code
+          in: path
+          description: code of the client to be found
+          required: true
+          type: string
+      responses:
+        '200':
+          description: The client is successfully found
+          schema:
+            $ref: '#/definitions/Client'
+        '400':
+          description: Malformed request body, validation failed or the client is not found
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: Incorrect URL path or http-method
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected internal server error
+          schema:
+            $ref: '#/definitions/Error'
+  /manage/clients:
+    get:
+      tags:
+        - Client
+      summary: Get all clients
+      description: Gets all clients
+      operationId: getAllClients
+      responses:
+        '200':
+          description: The list of all clients
+          schema:
+            $ref: '#/definitions/ClientsList'
+        '400':
+          description: Malformed request body, validation failed
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: Incorrect URL path or http-method
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected internal server error
+          schema:
+            $ref: '#/definitions/Error'
+  /tobarcode:
+    post:
+      tags:
+        - Barcode
+      summary: Generate barcode
+      description: Generates the barcodes list from the values list
+      operationId: generateBarcode
+      parameters:
+        - name: body
+          in: body
+          description: Request body
+          required: true
+          schema:
+            $ref: '#/definitions/GenerateRequest'
+      responses:
+        '200':
+          description: The list of generating results
+          schema:
+            $ref: '#/definitions/GenerateResponse'
+        '400':
+          description: Malformed request body, validation failed
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: Incorrect URL path or http-method
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected internal server error
+          schema:
+            $ref: '#/definitions/Error'
+  /frombarcode:
+    post:
+      tags:
+        - Barcode
+      summary: Parse barcode
+      description: Parses the barcodes list to the values list
+      operationId: parseBarcode
+      parameters:
+        - name: body
+          in: body
+          description: Request body
+          required: true
+          schema:
+            $ref: '#/definitions/GenerateRequest'
+      responses:
+        '200':
+          description: The list of generating results
+          schema:
+            $ref: '#/definitions/GenerateResponse'
+        '400':
+          description: Malformed request body, validation failed
+          schema:
+            $ref: '#/definitions/Error'
+        '404':
+          description: Incorrect URL path or http-method
+          schema:
+            $ref: '#/definitions/Error'
+        '500':
+          description: Unexpected internal server error
+          schema:
+            $ref: '#/definitions/Error' 
+definitions:
+  Action:
+    properties:
+      task:
+        type: string
+        description: task identifier (or name, or code)
+        example: 'SWP'
+      orderNum:
+        type: number
+        description: the order number of action
+        example: 1
+      ind1:
+        type: number
+        description: action's inner data parameter 1
+        example: 3
+      ind2:
+        type: number
+        description: action's inner data parameter 2
+        example: 5
+      count:
+        type: number
+        description: action's inner data parameter 3
+        example: null
+      description:
+        type: string
+        description: unnecessary action description. Should be replaced with generated description in the future
+        example: 'Swaps ind1 and ind2 digits'
+    required:
+      - task
+      - orderNum
+  Algorithm:
+    properties:
+      name:
+        type: string
+        description: unique name of the algorithm
+        example: 'SIMPLE10'
+      inPattern:
+        type: string
+        description: regular expression to test value
+        example: '[0-9]{8}'
+      outPattern:
+        type: string
+        description: regular expression to test barcode
+        example: '[0-9]{11}'
+      description:
+        type: string
+        description: description of the algorithm
+        example: 'Simple algorithm v1.0'
+      actions:
+        type: array
+        description: the list of steps or tasks to do transformation
+        items:
+          $ref: '#/definitions/Action'
+    required:
+      - name
+  AlgorithmsList:
+    properties:
+      count:
+        type: number
+        description: the length of results list
+        example: 1
+      items:
+        type: array
+        description: list of algorithms
+        items:
+          $ref: '#/definitions/Algorithm'
+    required:
+      - count
+      - items
+  Client2algorithm:
+    properties:
+      algorithmName:
+        type: string
+        description: the name of the allowed algorithm
+        example: 'SIMPLE10'
+      specValue:
+        type: string
+        description: specific client-algorithm data
+        example: '1234567'
+    required:
+      - algorithmName
+      - specValue
+  Client:
+    properties:
+      code:
+        type: string
+        description: unique code of the client
+        example: 'CLT1'
+      name:
+        type: string
+        description: title of the client
+        example: 'TFC: The First Client'
+      description:
+        type: string
+        description: description of client
+        example: 'This is the first client ever created'
+      algorithms:
+        type: array
+        description: list of allowed algorithms with specific data
+        items:
+          $ref: '#/definitions/Client2algorithm'
+  ClientsList:
+    properties:
+      count:
+        type: number
+        description: the length of results list
+        example: 1
+      items:
+        type: array
+        description: list of clients
+        items:
+          $ref: '#/definitions/Client'
+    required:
+      - count
+      - items
+  GeneratedItem:
+    properties:
+      generatedValue:
+        type: string
+        description: generated barcode or parsed value
+        example: '21432356787'
+      status:
+        type: string
+        description: 'result status: "OK" or "ERROR"'
+        example: 'OK'
+      errorDescription:
+        type: string
+        description: error description if occurs any
+        example: null
+    required:
+      - status
+  GenerateRequest:
+    properties:
+      clientCode:
+        type: string
+        description: code of client
+        example: 'CLT1'
+      algorithm:
+        type: string
+        description: name of algorithm to use
+        example: 'SIMPLE10'
+      values:
+        type: array
+        description: the list of values to process
+        items:
+          type: string
+          example: '12345678'
+    required:
+      - clientCode
+      - algorithm
+      - values      
+  GenerateResponse:
+    properties:
+      count:
+        type: number
+        description: the length of the list
+        example: 1
+      results:
+        type: array
+        description: results list
+        items:
+          $ref: '#/definitions/GeneratedItem'
+  Error:
+    properties:
+      errorCode:
+        type: string
+        description: specific error code
+        example: 'Barcode.Error.BadRequest.MalformedRequest'
+      errorDescr:
+        type: string
+        description: description of error (exception)
+        example: 'HttpMessageNotReadableException : JSON parse error: Unexpected character (''2'' (code 50))...'
+      errorTrace:
+        type: string
+        description: trace of error (exception)
+        example: 'org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: ...'
+    required:
+      - errorCode
+      - errorDescr
+      - errorTrace
