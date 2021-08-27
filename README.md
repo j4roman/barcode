@@ -46,7 +46,7 @@ If the *client* invokes the *parse* method with **barcode**s list then steps are
 The Web-service also provides REST API to hold *algorithm*s and *client*s data in DB.
 
 ## Database
-Tests on: `Oracle Database 12c Enterprise Edition Release 12.2.0.1.0 - 64bit Production`
+Tests on: `Oracle Database 12c Enterprise Edition Release 12.2.0.1.0 - 64bit Production`  
 Database scripts: [barcode_db_scripts.sql](/misc/barcode_db_scripts.sql)
 
 ![Database image](/misc/barcode_db_schema.jpg)
@@ -113,7 +113,7 @@ Actions apply in the increasing order to generate the barcode and in the decreas
 The response body has the same structure as request.  
 All response fields contain actual DB values (even "null"s). 
  
-Http-code for success response: `201 Created`
+> Http-code for success response: `201 Created`
 
 #### Update the algorithm
 HTTP `PUT /manage/algorithm`  
@@ -121,7 +121,7 @@ The request body is the same as in *create the algorithm* except most fields can
 "Null" fields will not be updated in DB.
 
 The reponse body is also the same.
-Http-code for success response: `200 OK`
+> Http-code for success response: `200 OK`
 
 #### Delete the algorithm by name
 HTTP `DELETE /manage/algorithm/{name}`  
@@ -129,7 +129,7 @@ HTTP `DELETE /manage/algorithm/{name}`
 No request body.  
 
 No response body.  
-Http-code for success response: `204 No Content`
+> Http-code for success response: `204 No Content`
 
 #### Get the algorithm by name
 HTTP `GET /manage/algorithm/{name}`  
@@ -137,10 +137,10 @@ HTTP `GET /manage/algorithm/{name}`
 No request body.
 
 The response body is the same as in *create the algorithm*.
-Http-code for success response: `200 OK`
+> Http-code for success response: `200 OK`
 
 #### Get all algorithms
-HTTP `GET /manage/algorithm**s**` 
+HTTP `GET /manage/algorithms` 
 No request body. 
  
 The response body contains the list of *create the algorithm*'s request bodies.  
@@ -207,7 +207,7 @@ Response for example:
     }
 ```
 
-Http-code for success response: `200 OK`
+> Http-code for success response: `200 OK`
 
 #### Create the client
 HTTP `POST /manage/client`
@@ -240,7 +240,7 @@ Request:
 The response body has the same structure as request.  
 All response fields contain actual DB values (even "null"s). 
  
-Http-code for success response: `201 Created`
+> Http-code for success response: `201 Created`
 
 #### Update the client
 HTTP `PUT /manage/client`  
@@ -248,7 +248,7 @@ The request body is the same as in *create the client* except most fields can be
 "Null" fields will not be updated in DB.
 
 The reponse body is also the same.
-Http-code for success response: `200 OK`
+> Http-code for success response: `200 OK`
 
 #### Delete the client by code
 HTTP `DELETE /manage/client/{code}`  
@@ -256,7 +256,7 @@ HTTP `DELETE /manage/client/{code}`
 No request body.
 
 No response body.
-Http-code for success response: `204 No Content`
+> Http-code for success response: `204 No Content`
 
 #### Get the client by the code
 HTTP `GET /manage/client/{code}`  
@@ -264,14 +264,14 @@ HTTP `GET /manage/client/{code}`
 No request body.
 
 The response body is the same as in *create the client*.
-Http-code for success response: `200 OK`
+> Http-code for success response: `200 OK`
 
 #### Get all clients
-HTTP `GET /manage/algorithm**s**`  
+HTTP `GET /manage/clients`  
 No request body.
 
 The response body contains the list of *create an client*'s request bodies in the same manner as in *Get all algorithms*.
-Http-code for success response: `200 OK`
+> Http-code for success response: `200 OK`
 
 ### Barcode operations
 
@@ -316,7 +316,7 @@ Response:
 - *results.status* - generating status: "OK" or "ERROR"
 - *results.errorDescription* - error description if occurs any
 
-Http-code for success response: `200 OK`
+> Http-code for success response: `200 OK`
 
 #### Parse barcode to value
 HTTP `POST /frombarcode`  
@@ -363,7 +363,7 @@ Response:
 - *results.status* - parsing status: "OK" or "ERROR"
 - *results.errorDescription* - error description if occurs any
 
-Http-code for success response: `200 OK`
+> Http-code for success response: `200 OK`
 
 ### Error response
 Currently errors have structure:
@@ -378,7 +378,7 @@ Currently errors have structure:
 - *errorDescr* - description of error (exception)
 - *errorTrace* - trace of error (exception)
 
-Http-code for responses: `400 Bad Request`, `404 Not Found`, `500 Internal Server Error`
+> Http-codes for responses: `400 Bad Request`, `404 Not Found`, `500 Internal Server Error`
 
 Error handling will be chenged in the future.
 
