@@ -17,8 +17,8 @@ Each *link* contains some additional *client* specific data for generation (it's
 So the *client* invokes the *generation* method with **value**s list and next things happen:
 1. The system checks that the *client* is allowed to use the *algorithm*.
 2. The system gets special data (the number) from *client* - *algorithm* relation.
-3. For every string in list of **value**s: 
-3.1. The system tests **value**'s format.
+3. For every string in the list of **value**s:  
+3.1. The system tests **value**'s format.  
 3.2. The *algorithm* performs transformation steps with tasks or *action*s to generate **barcode** using:
 - **value**
 - *client*'s special data
@@ -28,16 +28,16 @@ So the *client* invokes the *generation* method with **value**s list and next th
 If the *client* invokes the *parse* method with **barcode**s list then steps are almost the same:
 1. (same) The system checks that the *client* is allowed to use the *algorithm*. 
 2. (same) The system gets special data (the number) from *client* - *algorithm* connection.
-3. For every string in list of **barcode**s: 
-3.1. The system tests **barcode**'s format.
+3. For every string in the list of **barcode**s:  
+3.1. The system tests **barcode**'s format.  
 3.2. The *algorithm* performs transformation steps backwards with tasks or *actions* to parse **barcode** using:
 - **barcode**
 - *client*'s special data
-- *action*'s inner data
+- *action*'s inner data  
 3.3. The algorithm also validates **barcode**'s correctness:
 - tests **barcode**'s check number
 - *client*'s special data matches given **barcode**'s digits
-- *action*'s inner data matches given **barcode**'s digits
+- *action*'s inner data matches given **barcode**'s digits  
 (all these points depends on actual *algorithm*'s steps or *action*s)
 4. Returns results list back to the caller. Each list's item contains either parsed **value** or error description.
 
@@ -52,8 +52,9 @@ The swagger can be viewed here [barcode.yaml](/misc/barcode.yaml)
 ### Manage DB operations
 
 #### Create the algorithm
-HTTP `**POST** /manage/algorithm`
+HTTP `POST /manage/algorithm`  
 Request:
+```
     {
         "name": "SIMPLE10",
         "inPattern": "[0-9]{8}",
@@ -88,6 +89,7 @@ Request:
             }
         ]
     }
+```
 
 - *name* - unique name of the algorithm
 - *inPattern* - regular expression to test **value**s
@@ -107,7 +109,7 @@ All response fields contain actual DB values (even "null"s).
 Http-code for success response: `201 Created`
 
 #### Update the algorithm
-HTTP `**PUT** /manage/algorithm`  
+HTTP `PUT /manage/algorithm`  
 The request body is the same as in *create the algorithm* except most fields can be "null"ed.
 "Null" fields will not be updated in DB.
 
@@ -115,7 +117,7 @@ The reponse body is also the same.
 Http-code for success response: `200 OK`
 
 #### Delete the algorithm by name
-HTTP `**DELETE** /manage/algorithm/{name}`  
+HTTP `DELETE /manage/algorithm/{name}`  
 - *name* - the name of deleting algorithm.  
 No request body.  
 
@@ -123,7 +125,7 @@ No response body.
 Http-code for success response: `204 No Content`
 
 #### Get the algorithm by name
-HTTP `**GET** /manage/algorithm/{name}`  
+HTTP `GET /manage/algorithm/{name}`  
 *{name}* - the name of getting algorithm.  
 No request body.
 
@@ -131,11 +133,12 @@ The response body is the same as in *create the algorithm*.
 Http-code for success response: `200 OK`
 
 #### Get all algorithms
-HTTP `**GET** /manage/algorithm**s**` 
+HTTP `GET /manage/algorithm**s**` 
 No request body. 
  
 The response body contains the list of *create the algorithm*'s request bodies.  
 Response for example:  
+```
     {
         "count": 2,
         "items": [
@@ -195,12 +198,14 @@ Response for example:
             }
         ]
     }
+```
 
 Http-code for success response: `200 OK`
 
 #### Create the client
-HTTP `**POST** /manage/client`
+HTTP `POST /manage/client`
 Request:
+```
     {
         "code":"CLT1",
         "name":"TFC: The First Client",
@@ -216,6 +221,7 @@ Request:
             }
         ]
     }
+```
 	
 - *code* - unique code of the client
 - *name* - title of the client
@@ -230,7 +236,7 @@ All response fields contain actual DB values (even "null"s).
 Http-code for success response: `201 Created`
 
 #### Update the client
-HTTP `**PUT** /manage/client`  
+HTTP `PUT /manage/client`  
 The request body is the same as in *create the client* except most fields can be "null"ed.
 "Null" fields will not be updated in DB.
 
@@ -238,7 +244,7 @@ The reponse body is also the same.
 Http-code for success response: `200 OK`
 
 #### Delete the client by code
-HTTP `**DELETE** /manage/client/{code}`  
+HTTP `DELETE /manage/client/{code}`  
 - *code* - the code of deleting client.
 No request body.
 
@@ -246,7 +252,7 @@ No response body.
 Http-code for success response: `204 No Content`
 
 #### Get the client by the code
-HTTP `**GET** /manage/client/{code}`  
+HTTP `GET /manage/client/{code}`  
 *{code}* - the name of getting algorithm.
 No request body.
 
@@ -254,7 +260,7 @@ The response body is the same as in *create the client*.
 Http-code for success response: `200 OK`
 
 #### Get all clients
-HTTP `**GET** /manage/algorithm**s**`  
+HTTP `GET /manage/algorithm**s**`  
 No request body.
 
 The response body contains the list of *create an client*'s request bodies in the same manner as in *Get all algorithms*.
@@ -263,18 +269,21 @@ Http-code for success response: `200 OK`
 ### Barcode operations
 
 #### Generate barcode from value
-HTTP `**POST** /tobarcode`  
+HTTP `POST /tobarcode`  
 Request:
+```
     {
         "clientCode":"CLT1",
         "algorithm":"SIMPLE10",
         "values":["12345678", "66666666", "345"]
     }
+```
 - *clientCode* - code of client
 - *algorithm* - name of algorithm to use
 - *values* - the list of values to generate barcode's list
 
 Response:
+```
     {
         "count": 3,
         "results": [
@@ -292,6 +301,7 @@ Response:
             }
         ]
     }
+```
 
 - *count* - length of the list
 - *results* - results list
@@ -302,18 +312,21 @@ Response:
 Http-code for success response: `200 OK`
 
 #### Parse barcode to value
-HTTP `**POST** /frombarcode`  
+HTTP `POST /frombarcode`  
 Request:
+```
     {
         "clientCode":"CLT1",
         "algorithm":"SIMPLE10",
         "values":["21432356787", "26666366663", "26666366669", "26666466660"]
     }
+```
 - *clientCode* - code of client
 - *algorithm* - name of algorithm to use
 - *values* - the list of values to generate barcode's list
 
 Response:
+```
     {
         "count": 4,
         "results": [
@@ -335,6 +348,7 @@ Response:
             }
         ]
     }
+```
 
 - *count* - length of the list
 - *results* - results list
