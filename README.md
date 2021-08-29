@@ -1,5 +1,5 @@
 # WSBarCode
-The educational project.  
+The study project.  
 Started on August 22.
 
 ## Main idea
