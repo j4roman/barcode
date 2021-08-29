@@ -140,7 +140,7 @@ The response body is the same as in *create the algorithm*.
 > Http-code for success response: `200 OK`
 
 #### Get all algorithms
-HTTP `GET /manage/algorithms` 
+HTTP `GET /manage/algorithms`  
 No request body. 
  
 The response body contains the list of *create the algorithm*'s request bodies.  
@@ -210,7 +210,7 @@ Response for example:
 > Http-code for success response: `200 OK`
 
 #### Create the client
-HTTP `POST /manage/client`
+HTTP `POST /manage/client`  
 Request:
 ```
     {
