@@ -117,7 +117,7 @@ All response fields contain actual DB values (even "null"s).
 
 #### Update the algorithm
 HTTP `PUT /manage/algorithm`  
-The request body is the same as in *create the algorithm* except most fields can be "null"ed.
+The request body is the same as in *create the algorithm* except most fields can be "null"ed.  
 "Null" fields will not be updated in DB.
 
 The reponse body is also the same.
@@ -320,6 +320,7 @@ Response:
 
 #### Parse barcode to value
 HTTP `POST /frombarcode`  
+
 Request:
 ```
     {
@@ -378,7 +379,7 @@ Currently errors have structure:
 - *errorDescr* - description of error (exception)
 - *errorTrace* - trace of error (exception)
 
-> Http-codes for responses: `400 Bad Request`, `404 Not Found`, `500 Internal Server Error`
+> Http-codes for responses: `400 Bad Request`, `404 Not Found`, `500 Internal Server Error`  
 
 Error handling will be chenged in the future.
 
