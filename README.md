@@ -1,4 +1,4 @@
-# BarCode
+# WSBarCode
 The educational project.  
 Started on August 22.
 
@@ -410,3 +410,4 @@ Error handling will be chenged in the future.
 - SoaupUI 5.5.0
 - Docker 20.10.6
 - Apache Tomcat/9.0.50
+- TortoiseGit 2.8.0.0 (git version 2.23.0)
