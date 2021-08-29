@@ -117,7 +117,7 @@ All response fields contain actual DB values (even "null"s).
 
 #### Update the algorithm
 HTTP `PUT /manage/algorithm`  
-The request body is the same as in *create the algorithm* except most fields can be "null"ed.
+The request body is the same as in *create the algorithm* except most fields can be "null"ed.  
 "Null" fields will not be updated in DB.
 
 The reponse body is also the same.
