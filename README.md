@@ -1,6 +1,5 @@
 # WSBarCode
 The study project.  
-Started on August 22.
 
 ## Main idea
 The main idea is to create a web-service that performs transformation
@@ -403,7 +402,7 @@ Error handling will be chenged in the future.
 - Spring Boot 2.5.3
   - Web
 - Hibernate (Spring Boot)
-- Log4j2 (Spring Boot)
+- Slf4j (Spring Boot Logback)
 
 ### Applications
 - IntelliJ IDEA 2020.1 (Community Edition)

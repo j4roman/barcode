@@ -4,6 +4,8 @@ import com.example.j4roman.barcode.controller.utils.BCValidator;
 import com.example.j4roman.barcode.service.BarcodeService;
 import com.example.j4roman.barcode.service.dto.ToBarcodeRequestDTO;
 import com.example.j4roman.barcode.service.dto.ToBarcodeResponseDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class BarcodeController {
+
+    private static final Logger log = LoggerFactory.getLogger(BarcodeController.class);
 
     @Autowired
     BarcodeService barcodeService;

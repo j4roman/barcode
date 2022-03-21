@@ -67,4 +67,14 @@ public class ToBarcodeResponseDTO {
     public void setResults(List<ToBarcodeResponseItemDTO> results) {
         this.results = results;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("ToBarcodeResponseDTO{");
+        sb.append("errorDescription='").append(errorDescription).append('\'');
+        sb.append(", count=").append(count);
+        sb.append(", results=").append(results);
+        sb.append('}');
+        return sb.toString();
+    }
 }

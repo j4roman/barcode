@@ -70,4 +70,16 @@ public class AlgorithmDTO {
     public void setActions(List<ActionDTO> actions) {
         this.actions = actions;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("AlgorithmDTO{");
+        sb.append("name='").append(name).append('\'');
+        sb.append(", inPattern='").append(inPattern).append('\'');
+        sb.append(", outPattern='").append(outPattern).append('\'');
+        sb.append(", description='").append(description).append('\'');
+        sb.append(", actions=").append(actions);
+        sb.append('}');
+        return sb.toString();
+    }
 }

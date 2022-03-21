@@ -27,4 +27,13 @@ public class ClientsListResponseDTO {
     public void setItems(List<ClientDTO> items) {
         this.items = items;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("ClientsListResponseDTO{");
+        sb.append("count=").append(count);
+        sb.append(", items=").append(items);
+        sb.append('}');
+        return sb.toString();
+    }
 }

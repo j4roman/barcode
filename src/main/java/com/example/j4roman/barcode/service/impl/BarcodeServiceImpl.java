@@ -12,9 +12,9 @@ import com.example.j4roman.barcode.service.exceptions.DAOException;
 import com.example.j4roman.barcode.service.exceptions.UnexpectedDAOException;
 import com.example.j4roman.barcode.service.utils.BarcodeCheckFailedException;
 import com.example.j4roman.barcode.service.utils.BarcodeFuncFactory;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +28,7 @@ import java.util.function.Function;
 @Service
 public class BarcodeServiceImpl implements BarcodeService {
 
-    private static final Logger logger = LogManager.getLogger(BarcodeServiceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(BarcodeServiceImpl.class);
 
     @Autowired
     BCAlgorithmDAO bcAlgorithmDAO;
@@ -48,21 +48,29 @@ public class BarcodeServiceImpl implements BarcodeService {
     @Transactional
     public ToBarcodeResponseDTO generate(ToBarcodeRequestDTO requestBody, boolean isParse) {
         try {
+            if (!isParse) {
+                log.debug("Generating barcodes from {}", requestBody);
+            } else {
+                log.debug("Parsing values from {}", requestBody);
+            }
             // Check client
             String cltUpperCode = requestBody.getClientCode().toUpperCase();
             Client client = clientDAO.getByCode(cltUpperCode);
             if (client == null) {
+                log.warn("Client '{}' does not exist", cltUpperCode);
                 return ToBarcodeResponseDTO.clientNotFound(cltUpperCode);
             }
             // Check algorithm
             String algUpperName = requestBody.getAlgorithm().toUpperCase();
             BCAlgorithm algorithm = bcAlgorithmDAO.getByName(algUpperName);
             if (algorithm == null) {
+                log.warn("Algorithm '{}' does not exist", algUpperName);
                 return ToBarcodeResponseDTO.algorithmNotFound(algUpperName);
             }
             // Check client-algorithm access
             String specValue = clientDAO.getValueByClientAlgorithm(client, algorithm);
             if (specValue == null) {
+                log.warn("Client '{}' doesn't have access to use algorithm '{}'", cltUpperCode, algUpperName);
                 return ToBarcodeResponseDTO.clientAlgorithmNotBind(client.getCode(), algorithm.getName());
             }
             // List to hold results
@@ -80,7 +88,7 @@ public class BarcodeServiceImpl implements BarcodeService {
                 String pattern = !isParse ? algorithm.getInPattern() : algorithm.getOutPattern();
                 // Test value for correct format
                 if (!value.matches(pattern)) {
-                    logger.info("Value {} doesn\'t match pattern {}", value, pattern);
+                    log.warn("The value {} doesn't match pattern {}", value, pattern);
                     results.add(ToBarcodeResponseItemDTO.errorDoesntMatch(value, pattern));
                     continue;
                 }
@@ -89,17 +97,19 @@ public class BarcodeServiceImpl implements BarcodeService {
                     String generatedValue = generateValueFunc.apply(value);
                     results.add(ToBarcodeResponseItemDTO.okResult(generatedValue));
                 } catch (BarcodeCheckFailedException e) {
+                    log.warn("The barcode check failed");
                     results.add(ToBarcodeResponseItemDTO.errorDescr(e.getMessage()));
                 } catch (Exception e) {
                     StringWriter sw = new StringWriter();
                     PrintWriter pw = new PrintWriter(sw);
                     e.printStackTrace(pw);
-                    logger.error(sw.toString());
+                    log.warn("Unexpected error: {}", sw.toString());
                     results.add(ToBarcodeResponseItemDTO.errorUnexpected());
                 }
             }
             return new ToBarcodeResponseDTO(results);
         } catch (HibernateException e) {
+            log.error("DB processing error while generating");
             throw new UnexpectedDAOException(e);
         }
     }

@@ -30,4 +30,13 @@ public class Client2algorithmDTO {
     public void setSpecValue(String specValue) {
         this.specValue = specValue;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Client2algorithmDTO{");
+        sb.append("algorithmName='").append(algorithmName).append('\'');
+        sb.append(", specValue='").append(specValue).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }

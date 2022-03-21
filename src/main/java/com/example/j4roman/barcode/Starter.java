@@ -13,6 +13,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.orm.hibernate5.HibernateTransactionManager;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.web.filter.CommonsRequestLoggingFilter;
 
 import javax.sql.DataSource;
 import java.util.Properties;
@@ -78,5 +79,17 @@ public class Starter extends SpringBootServletInitializer {
         HibernateTransactionManager transactionManager = new HibernateTransactionManager(sessionFactory);
 
         return transactionManager;
+    }
+
+    @Autowired
+    @Bean(name = "logFilter")
+    public CommonsRequestLoggingFilter getLogFilter() {
+        CommonsRequestLoggingFilter filter
+                = new CommonsRequestLoggingFilter();
+        filter.setIncludeQueryString(true);
+        filter.setIncludePayload(true);
+        filter.setMaxPayloadLength(10000);
+        filter.setIncludeHeaders(true);
+        return filter;
     }
 }

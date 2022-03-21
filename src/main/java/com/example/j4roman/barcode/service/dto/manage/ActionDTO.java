@@ -62,4 +62,17 @@ public class ActionDTO {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("ActionDTO{");
+        sb.append("task='").append(task).append('\'');
+        sb.append(", orderNum=").append(orderNum);
+        sb.append(", ind1=").append(ind1);
+        sb.append(", ind2=").append(ind2);
+        sb.append(", count=").append(count);
+        sb.append(", description='").append(description).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }

@@ -41,4 +41,14 @@ public class ToBarcodeRequestDTO {
     public void setValues(List<String> values) {
         this.values = values;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("ToBarcodeRequestDTO{");
+        sb.append("clientCode='").append(clientCode).append('\'');
+        sb.append(", algorithm='").append(algorithm).append('\'');
+        sb.append(", values=").append(values);
+        sb.append('}');
+        return sb.toString();
+    }
 }
