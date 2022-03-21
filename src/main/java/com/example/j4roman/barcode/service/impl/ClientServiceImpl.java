@@ -14,9 +14,9 @@ import com.example.j4roman.barcode.service.dto.manage.Client2algorithmDTO;
 import com.example.j4roman.barcode.service.dto.manage.ClientDTO;
 import com.example.j4roman.barcode.service.exceptions.UnexpectedDAOException;
 import com.example.j4roman.barcode.service.utils.EntityDTOConverter;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.hibernate.HibernateException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 @Service
 public class ClientServiceImpl implements ClientService {
 
-    private static final Logger logger = LogManager.getLogger(ClientServiceImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(ClientServiceImpl.class);
     private static final int DB_CALL_TIMEOUT = 30;
 
     @Autowired
@@ -42,6 +42,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     @Transactional(timeout = DB_CALL_TIMEOUT)
     public ClientDTO create(ClientDTO clientReq) {
+        log.debug("Client '{}' is creating from {}", clientReq.getCode(), clientReq);
         try {
             String upperCode = clientReq.getCode().toUpperCase();
             Client foundClient = clientDAO.getByCode(upperCode);
@@ -56,7 +57,7 @@ public class ClientServiceImpl implements ClientService {
                                     .map(clt -> clt.getAlgorithmName().toUpperCase())
                                     .collect(Collectors.toList())
                     );
-                    logger.debug("Found algorithms {}", algorithms);
+                    log.debug("For the client '{}' the next algorithms have been found: {}", clientReq.getCode(), algorithms);
                     // populate map with actual algorithms
                     for (Client2algorithmDTO c2aDTO : clientReq.getAlgorithms()) {
                         Optional<BCAlgorithm> algorithmOpt = algorithms
@@ -66,17 +67,21 @@ public class ClientServiceImpl implements ClientService {
                         if (algorithmOpt.isPresent()) {
                             nameAlgorithmMap.put(c2aDTO.getAlgorithmName().toUpperCase(), algorithmOpt.get());
                         } else {
+                            log.debug("For the client '{}' there is no algorithm with name {}", clientReq.getCode(), c2aDTO.getAlgorithmName().toUpperCase());
                             throw new EntityDoesNotExistException(c2aDTO.getAlgorithmName().toUpperCase());
                         }
                     }
                 }
                 Client newClient = EntityDTOConverter.convert(clientReq, nameAlgorithmMap);
                 clientDAO.create(newClient);
+                log.debug("Client '{}' is created", newClient.getCode());
                 return EntityDTOConverter.convert(newClient);
             } else {
+                log.error("Client '{}' already exists", clientReq.getCode());
                 throw new EntityAlreadyExistsException(upperCode);
             }
         } catch (HibernateException e) {
+            log.error("DB processing error while creating client '{}'", clientReq.getCode());
             throw new UnexpectedDAOException(e);
         }
     }
@@ -85,10 +90,12 @@ public class ClientServiceImpl implements ClientService {
     @Override
     @Transactional(timeout = DB_CALL_TIMEOUT)
     public ClientDTO update(ClientDTO clientReq) {
+        log.debug("Client '{}' is updating from {}", clientReq.getCode(), clientReq);
         try {
             String upperCode = clientReq.getCode().toUpperCase();
             final Client foundClient = clientDAO.getByCode(upperCode);
             if (foundClient != null) {
+                log.debug("Found client '{}'", foundClient.toString());
                 boolean isUpd = false;
                 if (clientReq.getName() != null) {
                     foundClient.setName(clientReq.getName());
@@ -108,7 +115,7 @@ public class ClientServiceImpl implements ClientService {
                                         .map(clt -> clt.getAlgorithmName().toUpperCase())
                                         .collect(Collectors.toList())
                         );
-                        logger.debug("Found algorithms {}", algorithms);
+                        log.debug("For the client '{}' the next algorithms have been found: {}", clientReq.getCode(), algorithms);
                         // populate map with actual algorithms
                         Set<Client2algorithm> newClient2Algs = new HashSet<>();
                         for (Client2algorithmDTO c2aDTO : clientReq.getAlgorithms()) {
@@ -130,12 +137,17 @@ public class ClientServiceImpl implements ClientService {
                 }
                 if (isUpd) {
                     clientDAO.change(foundClient);
+                    log.debug("Client '{}' is updated", clientReq.getCode());
+                } else {
+                    log.debug("No need to update client '{}'", clientReq.getCode());
                 }
                 return EntityDTOConverter.convert(foundClient);
             } else {
+                log.error("Client '{}' does not exist", clientReq.getCode());
                 throw new EntityDoesNotExistException(upperCode);
             }
         } catch (HibernateException e) {
+            log.error("DB processing error while updating client '{}'", clientReq.getCode());
             throw new UnexpectedDAOException(e);
         }
     }
@@ -143,15 +155,20 @@ public class ClientServiceImpl implements ClientService {
     @Override
     @Transactional(timeout = DB_CALL_TIMEOUT)
     public void deleteByCode(String code) {
+        log.debug("Client '{}' is deleting", code);
         try {
             String upperCode = code.toUpperCase();
             Client foundClient = clientDAO.getByCode(upperCode);
             if (foundClient != null) {
+                log.debug("Found client '{}'", foundClient.toString());
                 clientDAO.delete(foundClient);
+                log.debug("Client '{}' is deleted", code);
             } else {
+                log.error("Client '{}' does not exist", code);
                 throw new EntityDoesNotExistException(upperCode);
             }
         } catch (HibernateException e) {
+            log.error("DB processing error while deleting client '{}'", code);
             throw new UnexpectedDAOException(e);
         }
     }
@@ -159,15 +176,19 @@ public class ClientServiceImpl implements ClientService {
     @Override
     @Transactional(timeout = DB_CALL_TIMEOUT)
     public ClientDTO getByCode(String code) {
+        log.debug("Client '{}' is getting", code);
         try {
             String upperCode = code.toUpperCase();
             Client foundClient = clientDAO.getByCode(upperCode);
             if (foundClient != null) {
+                log.debug("Found client '{}'", foundClient.toString());
                 return EntityDTOConverter.convert(foundClient);
             } else {
+                log.error("Client '{}' does not exist", code);
                 throw new EntityDoesNotExistException(upperCode);
             }
         } catch (HibernateException e) {
+            log.error("DB processing error while getting client '{}'", code);
             throw new UnexpectedDAOException(e);
         }
     }
@@ -175,6 +196,7 @@ public class ClientServiceImpl implements ClientService {
     @Override
     @Transactional(timeout = DB_CALL_TIMEOUT)
     public List<ClientDTO> getAll() {
+        log.debug("Get all the clients");
         try {
             List<Client> allList = clientDAO.getAll();
             return new ArrayList<>(
@@ -183,6 +205,7 @@ public class ClientServiceImpl implements ClientService {
                             .collect(Collectors.toList())
             );
         } catch (HibernateException e) {
+            log.error("DB processing error while getting the clients");
             throw new UnexpectedDAOException(e);
         }
     }

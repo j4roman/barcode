@@ -53,4 +53,15 @@ public class ClientDTO {
     public void setAlgorithms(List<Client2algorithmDTO> algorithms) {
         this.algorithms = algorithms;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("ClientDTO{");
+        sb.append("code='").append(code).append('\'');
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", description='").append(description).append('\'');
+        sb.append(", algorithms=").append(algorithms);
+        sb.append('}');
+        return sb.toString();
+    }
 }

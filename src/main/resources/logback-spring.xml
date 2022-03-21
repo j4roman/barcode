@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <property name="CONSOLE_LOG_PATTERN" value="%black(%d{ISO8601}) [%blue(%t)] %highlight(%-5level) %yellow(%C{1.}) - %msg%n%throwable" />
+    <property name="FILE_LOG_PATTERN" value="%d{ISO8601} [%t] %p %C{1.} - %m%n" />
+    <property name="LOGS_ROOT" value="/home/logs" />
+    <property name="APP_LOG_NAME" value="barcode" />
+
+    <appender name="LogToConsole"
+              class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                ${CONSOLE_LOG_PATTERN}
+            </Pattern>
+        </layout>
+    </appender>
+    <appender name="LogToFile"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOGS_ROOT}/${APP_LOG_NAME}.log</file>
+        <encoder
+                class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>${FILE_LOG_PATTERN}</Pattern>
+        </encoder>
+        <rollingPolicy
+                class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOGS_ROOT}/archived/${APP_LOG_NAME}-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>2MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="LogToFile" />
+        <appender-ref ref="LogToConsole" />
+    </root>
+
+    <logger name="com.example.j4roman.barcode" level="debug" />
+    <logger name="org.springframework.web.filter.CommonsRequestLoggingFilter" level="debug" />
+    <logger name="org.hibernate.SQL" level="debug" />
+</configuration>

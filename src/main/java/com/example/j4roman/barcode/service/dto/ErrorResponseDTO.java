@@ -54,4 +54,14 @@ public class ErrorResponseDTO {
     public void setErrorTrace(String errorTrace) {
         this.errorTrace = errorTrace;
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("ErrorResponseDTO{");
+        sb.append("errorCode='").append(errorCode).append('\'');
+        sb.append(", errorDescr='").append(errorDescr).append('\'');
+        sb.append(", errorTrace='").append(errorTrace).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }

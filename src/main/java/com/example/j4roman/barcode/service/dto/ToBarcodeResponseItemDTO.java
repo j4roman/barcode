@@ -65,4 +65,14 @@ public class ToBarcodeResponseItemDTO {
         OK,
         ERROR
     }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("ToBarcodeResponseItemDTO{");
+        sb.append("generatedValue='").append(generatedValue).append('\'');
+        sb.append(", status=").append(status);
+        sb.append(", errorDescription='").append(errorDescription).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }

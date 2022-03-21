@@ -1,9 +1,7 @@
 package com.example.j4roman.barcode.persistance.dao.impl;
 
 import com.example.j4roman.barcode.persistance.dao.BCAlgorithmDAO;
-import com.example.j4roman.barcode.service.exceptions.DAOException;
 import com.example.j4roman.barcode.persistance.entities.BCAlgorithm;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;

@@ -1,12 +1,9 @@
 package com.example.j4roman.barcode.persistance.dao.impl;
 
 import com.example.j4roman.barcode.persistance.dao.ClientDAO;
-import com.example.j4roman.barcode.service.exceptions.DAOException;
-import com.example.j4roman.barcode.service.exceptions.RelationDoesntExistException;
 import com.example.j4roman.barcode.persistance.entities.BCAlgorithm;
 import com.example.j4roman.barcode.persistance.entities.Client;
 import com.example.j4roman.barcode.persistance.entities.Client2algorithm;
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -56,7 +53,7 @@ public class ClientDAOImpl extends GenericDAOImpl<Client, Long> implements Clien
         if (client2alg != null) {
             return client2alg.getSpecValue();
         } else {
-            throw new RelationDoesntExistException(client.getCode(), algorithm.getName());
+            return null;
         }
     }
 }
