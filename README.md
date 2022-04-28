@@ -44,6 +44,29 @@ If the *client* invokes the *parse* method with **barcode**s list then steps are
 ### Manage DB operations
 The Web-service also provides REST API to hold *algorithm*s and *client*s data in DB.
 
+## Security
+The application checks "username"(or code, or auth-name) at HTTP-header "X-Auth-Name" and ip address of incoming request.
+Then it compares them to the bindings from yaml file located inside resources directory.
+There are also 2 predefined roles: 
+- **ADMIN** - to manage *client*s and *algorithm*s,
+- **USER** - to generate and parse barcodes.
+
+Example of `users.yml`:
+```
+users:
+  data:
+    - auth-name: admin2
+      role: ADMIN
+      ips:
+        - 172.17.0.1
+        - 172.0.0.2
+    - auth-name: user2
+      role: USER
+      ips:
+        - 172.17.0.1
+        - 172.0.0.2
+```
+
 ## Database
 Tests on: `Oracle Database 12c Enterprise Edition Release 12.2.0.1.0 - 64bit Production`  
 Database scripts: [barcode_db_scripts.sql](/misc/barcode_db_scripts.sql)
@@ -138,7 +161,7 @@ No request body.
 The response body is the same as in *create the algorithm*.
 > Http-code for success response: `200 OK`
 
-#### Get all algorithms
+#### Get all the algorithms
 HTTP `GET /manage/algorithms`  
 No request body. 
  
@@ -378,7 +401,7 @@ Currently errors have structure:
 - *errorDescr* - description of error (exception)
 - *errorTrace* - trace of error (exception)
 
-> Http-codes for responses: `400 Bad Request`, `404 Not Found`, `500 Internal Server Error`  
+> Http-codes for responses: `400 Bad Request`, `401 Unauthorized`, `404 Not Found`, `500 Internal Server Error`  
 
 Error handling will be chenged in the future.
 
@@ -386,7 +409,6 @@ Error handling will be chenged in the future.
 - Rebuild error responses
 - Add request values validation: not only for "null"s and emptiness
 - Add algorithm data validation: test algorithm before saving in DB
-- Add security features: ip-address checking
 - Optimize some details:
   - dynamically generate action's description
   - change task function generating process
