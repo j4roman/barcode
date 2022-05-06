@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -28,6 +30,7 @@ public class BCErrorHandler {
     private static final String ERRORCODE_ALREADY_EXISTS = "BadRequest.Create.AlreadyExists";
     private static final String ERRORCODE_NOT_EXISTS = "BadRequest.ReadUpdateDelete.NotExists";
     private static final String ERRORCODE_NOT_FOUND = "BadRequest.Url.NotFound";
+    private static final String ERRORCODE_ACCESS_DENIED = "BadRequest.Security.AccessDenied";
 
     private static final Logger log = LoggerFactory.getLogger(BCErrorHandler.class);
 
@@ -67,6 +70,18 @@ public class BCErrorHandler {
         return getSimpleResponse(e, ERRORCODE_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
 
+    // Handles security's AccessDenied errors
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorResponseDTO> handleAccessDenied(AccessDeniedException e) {
+        return getNoDescriptionResponse(e, ERRORCODE_ACCESS_DENIED, HttpStatus.UNAUTHORIZED);
+    }
+
+    // Handles security's authentication errors
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<ErrorResponseDTO> handleAuthenticationError(AuthenticationException e) {
+        return getNoDescriptionResponse(e, ERRORCODE_ACCESS_DENIED, HttpStatus.UNAUTHORIZED);
+    }
+
     // Handles all other cases
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponseDTO> handleError(Exception e) {
@@ -77,6 +92,13 @@ public class BCErrorHandler {
     private static ResponseEntity<ErrorResponseDTO> getSimpleResponse(Exception e, String errorCode, HttpStatus httpStatus) {
         log.error("Exception occurred: ", e);
         ErrorResponseDTO errorResponse = new ErrorResponseDTO(ERRORCODE_COMMON_PART + "." + errorCode, e);
+        return new ResponseEntity<>(errorResponse, httpStatus);
+    }
+
+    // No description response generator (for AccessDenied and Unauthorized errors)
+    private static ResponseEntity<ErrorResponseDTO> getNoDescriptionResponse(Exception e, String errorCode, HttpStatus httpStatus) {
+        log.error("Exception occurred: ", e);
+        ErrorResponseDTO errorResponse = new ErrorResponseDTO(ERRORCODE_COMMON_PART + "." + errorCode);
         return new ResponseEntity<>(errorResponse, httpStatus);
     }
 }

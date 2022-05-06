@@ -12,6 +12,10 @@ public class ErrorResponseDTO {
     private String errorDescr;
     private String errorTrace;
 
+    public ErrorResponseDTO(String errorCode) {
+        this.errorCode = errorCode;
+    }
+
     public ErrorResponseDTO(String errorCode, Throwable e) {
         this.errorCode = errorCode;
         this.errorDescr = e.getClass().getSimpleName() + " : " + e.getMessage();

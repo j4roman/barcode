@@ -1,0 +1,12 @@
+users:
+  data:
+    - auth-name: admin2
+      role: ADMIN
+      ips:
+        - 172.17.0.1
+        - 172.0.0.2
+    - auth-name: user2
+      role: USER
+      ips:
+        - 172.17.0.1
+        - 172.0.0.2
