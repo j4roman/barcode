@@ -9,7 +9,10 @@ import com.example.j4roman.barcode.service.dto.manage.AlgorithmDTO;
 import com.example.j4roman.barcode.service.exceptions.EntityAlreadyExistsException;
 import com.example.j4roman.barcode.service.exceptions.EntityDoesNotExistException;
 import com.example.j4roman.barcode.service.exceptions.UnexpectedDAOException;
+import com.example.j4roman.barcode.service.utils.CheckDataHelper;
+import com.example.j4roman.barcode.service.utils.FillDefaultsHelper;
 import com.example.j4roman.barcode.service.utils.EntityDTOConverter;
+import com.example.j4roman.barcode.service.utils.tasks.Tasks;
 import org.hibernate.HibernateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +38,9 @@ public class BCAlgorithmServiceImpl implements BCAlgorithmService {
     @Autowired
     private ActionDAO actionDAO;
 
+    @Autowired
+    private Tasks tasks;
+
     @Override
     @Transactional(timeout = DB_CALL_TIMEOUT)
     public AlgorithmDTO create(AlgorithmDTO algorithmDTO) {
@@ -44,6 +50,8 @@ public class BCAlgorithmServiceImpl implements BCAlgorithmService {
             BCAlgorithm foundAlgorithm = bcAlgorithmDAO.getByName(upperName);
             if (foundAlgorithm == null) {
                 BCAlgorithm bcAlgorithm = EntityDTOConverter.convert(algorithmDTO);
+                FillDefaultsHelper.fillTasks(tasks, bcAlgorithm);
+                CheckDataHelper.checkTasks(tasks, bcAlgorithm);
                 bcAlgorithmDAO.create(bcAlgorithm);
                 log.debug("Algorithm '{}' is created", bcAlgorithm.getName());
                 return EntityDTOConverter.convert(bcAlgorithm);
@@ -88,6 +96,8 @@ public class BCAlgorithmServiceImpl implements BCAlgorithmService {
                                     .collect(Collectors.toSet())
                     );
                     foundAlgorithm.setActions(newActions);
+                    FillDefaultsHelper.fillTasks(tasks, foundAlgorithm);
+                    CheckDataHelper.checkTasks(tasks, foundAlgorithm);
                     isUpd = true;
                 }
                 if (isUpd) {

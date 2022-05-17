@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <property name="CONSOLE_LOG_PATTERN" value="%black(%d{ISO8601}) [%blue(%t)] %highlight(%-5level) %yellow(%class{60}) - %msg%n%throwable" />
+    <property name="CONSOLE_LOG_PATTERN" value="%gray(%d{ISO8601}) [%blue(%t)] %highlight(%-5level) %yellow(%class{60}) - %msg%n%throwable" />
     <property name="FILE_LOG_PATTERN" value="%d{ISO8601} [%t] %p %class{60} - %m%n" />
     <property name="LOGS_ROOT" value="/home/logs" />
     <property name="APP_LOG_NAME" value="barcode" />

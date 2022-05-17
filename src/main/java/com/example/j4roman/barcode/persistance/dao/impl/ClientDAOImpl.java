@@ -38,7 +38,7 @@ public class ClientDAOImpl extends GenericDAOImpl<Client, Long> implements Clien
     }
 
     @Override
-    public String getValueByClientAlgorithm(Client client, BCAlgorithm algorithm) {
+    public Client2algorithm getDataByClientAlgorithm(Client client, BCAlgorithm algorithm) {
         Session hibernateSession = sessionFactory.getCurrentSession();
         StringBuilder querySB = new StringBuilder();
         querySB.append("select c2a")
@@ -50,10 +50,6 @@ public class ClientDAOImpl extends GenericDAOImpl<Client, Long> implements Clien
         query.setParameter("client", client);
         query.setParameter("algorithm", algorithm);
         Client2algorithm client2alg = query.uniqueResult();
-        if (client2alg != null) {
-            return client2alg.getSpecValue();
-        } else {
-            return null;
-        }
+        return client2alg;
     }
 }

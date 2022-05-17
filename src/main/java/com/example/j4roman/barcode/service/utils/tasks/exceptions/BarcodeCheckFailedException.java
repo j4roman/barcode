@@ -1,8 +1,7 @@
-package com.example.j4roman.barcode.service.utils;
+package com.example.j4roman.barcode.service.utils.tasks.exceptions;
 
 /**
  * The exceptions occurs when barcode failed to parse
- * Genereted in {@link CommonTasks}
  *
  * General exception.
  *

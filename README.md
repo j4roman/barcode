@@ -1,7 +1,7 @@
 # WSBarCode
-The study project.  
+A training project.
 
-## Main idea
+## The main idea
 The main idea is to create a web-service that performs transformation
 from a **number** to a **barcode** and vice versa.
 
@@ -95,26 +95,26 @@ Request:
                 "orderNum": 1,
                 "ind1": 2,
                 "ind2": 4,
-                "description": "Swaps ind1 and ind2 digits"
+                "description": "Swap ind1 (2) and ind2 (4) chars"
             },
             {
                 "task": "CHKNUM1",
                 "orderNum": 4,
-                "description": "Adds simple check num to the end using (1,3,1,3,1,3,1,3) multipliers"
+                "description": "Add simple check num to the end using (1,3,1,3,1...) multipliers"
             },
             {
                 "task": "ADD_CLT",
                 "orderNum": 2,
                 "ind1": 5,
                 "ind2": 3,
-                "description": "Inserts digit from client's specValue at position ind2 into position ind1"
+                "description": "Insert char from ind2 (3) position of client's specValue into ind1 (5) position"
             },
             {
                 "task": "INS",
                 "orderNum": 3,
                 "ind1": 1,
                 "ind2": 2,
-                "description": "Inserts fixed digit with value ind2 into position ind1"
+                "description": "Insert fixed digit with value ind2 (2) into position ind1 (1)"
             }
         ]
     }
@@ -129,7 +129,7 @@ Request:
 - *actions.orderNum* - the order number of action
 Actions apply in the increasing order to generate the barcode and in the decreasing order to parse it back
 - *actions.ind1*, *actions.ind2*, *actions.count* - *action*'s inner data
-- *actions.description* - unnecessary action description. Should be replaced with generated description in the future
+- *actions.description* - unnecessary action description. Can be generated automatically if value isn't present
 
 
 The response body has the same structure as request.  
@@ -140,7 +140,7 @@ All response fields contain actual DB values (even "null"s).
 #### Update the algorithm
 HTTP `PUT /manage/algorithm`  
 The request body is the same as in *create the algorithm* except most fields can be "null"ed.  
-"Null" fields will not be updated in DB.
+"Null" fields will not be updated in DB (except action's descriptions)
 
 The reponse body is also the same.
 > Http-code for success response: `200 OK`
@@ -182,26 +182,26 @@ Response for example:
                         "orderNum": 1,
                         "ind1": 2,
                         "ind2": 4,
-                        "description": "Swaps ind1 and ind2 digits"
+                        "description": "Swap ind1 (2) and ind2 (4) chars"
                     },
                     {
                         "task": "CHKNUM1",
                         "orderNum": 4,
-                        "description": "Adds simple check num to the end using (1,3,1,3,1,3,1,3) multipliers"
+                        "description": "Add simple check num to the end using (1,3,1,3,1...) multipliers"
                     },
                     {
                         "task": "ADD_CLT",
                         "orderNum": 2,
                         "ind1": 5,
                         "ind2": 3,
-                        "description": "Inserts digit from client's specValue at position ind2 into position ind1"
+                        "description": "Insert char from ind2 (3) position of client's specValue into ind1 (5) position"
                     },
                     {
                         "task": "INS",
                         "orderNum": 3,
                         "ind1": 1,
                         "ind2": 2,
-                        "description": "Inserts fixed digit with value ind2 into position ind1"
+                        "description": "Insert fixed digit with value ind2 (2) into position ind1 (1)"
                     }
                 ]
             },
@@ -214,14 +214,14 @@ Response for example:
                     {
                         "task": "CHKNUM1",
                         "orderNum": 3,
-                        "description": "Adds simple check num to the end using (1,3,1,3,1,3,1,3) multipliers"
+                        "description": "Add simple check num to the end using (1,3,1,3,1...) multipliers"
                     },
                     {
                         "task": "INS",
                         "orderNum": 3,
                         "ind1": 1,
                         "ind2": 2,
-                        "description": "Inserts fixed digit with value ind2 into position ind1"
+                       "description": "Insert fixed digit with value ind2 (2) into position ind1 (1)"
                     }
                 ]
             }
@@ -403,15 +403,12 @@ Currently errors have structure:
 
 > Http-codes for responses: `400 Bad Request`, `401 Unauthorized`, `404 Not Found`, `500 Internal Server Error`  
 
-Error handling will be chenged in the future.
+Error handling may be changed in the future.
 
 ## TODO list
 - Rebuild error responses
 - Add request values validation: not only for "null"s and emptiness
 - Add algorithm data validation: test algorithm before saving in DB
-- Optimize some details:
-  - dynamically generate action's description
-  - change task function generating process
 
 ## Used applications and frameworks
 

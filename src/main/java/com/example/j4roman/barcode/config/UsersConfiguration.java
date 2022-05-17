@@ -27,7 +27,7 @@ public class UsersConfiguration {
     @Bean(name = "usersInfo")
     public UsersInfo getUsersInfo() {
         List<String> roles = Arrays.stream(XAuthCodeRoles.values()).map(role -> role.toString()).collect(Collectors.toList());
-        log.debug("Registred roles: {}", roles);
+        log.debug("Registered roles: {}", roles);
         for (UserData userData : usersProperties.getData()) {
             if (!roles.contains(userData.getRole())) {
                 throw new InvalidUserDataException("Invalid role name = \'" + userData.getRole() + "\'. Must be one of " + roles);
