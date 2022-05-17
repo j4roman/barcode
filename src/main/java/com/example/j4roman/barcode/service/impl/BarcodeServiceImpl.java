@@ -4,14 +4,15 @@ import com.example.j4roman.barcode.persistance.dao.BCAlgorithmDAO;
 import com.example.j4roman.barcode.persistance.dao.ClientDAO;
 import com.example.j4roman.barcode.persistance.entities.BCAlgorithm;
 import com.example.j4roman.barcode.persistance.entities.Client;
+import com.example.j4roman.barcode.persistance.entities.Client2algorithm;
 import com.example.j4roman.barcode.service.BarcodeService;
 import com.example.j4roman.barcode.service.dto.ToBarcodeRequestDTO;
 import com.example.j4roman.barcode.service.dto.ToBarcodeResponseDTO;
 import com.example.j4roman.barcode.service.dto.ToBarcodeResponseItemDTO;
-import com.example.j4roman.barcode.service.exceptions.DAOException;
 import com.example.j4roman.barcode.service.exceptions.UnexpectedDAOException;
-import com.example.j4roman.barcode.service.utils.BarcodeCheckFailedException;
+import com.example.j4roman.barcode.service.utils.tasks.exceptions.BarcodeCheckFailedException;
 import com.example.j4roman.barcode.service.utils.BarcodeFuncFactory;
+import com.example.j4roman.barcode.service.utils.tasks.Tasks;
 import org.hibernate.HibernateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,10 +32,13 @@ public class BarcodeServiceImpl implements BarcodeService {
     private static final Logger log = LoggerFactory.getLogger(BarcodeServiceImpl.class);
 
     @Autowired
-    BCAlgorithmDAO bcAlgorithmDAO;
+    private BCAlgorithmDAO bcAlgorithmDAO;
 
     @Autowired
-    ClientDAO clientDAO;
+    private ClientDAO clientDAO;
+
+    @Autowired
+    private Tasks tasks;
 
     /**
      * The method is used to generate barcode from values list
@@ -68,8 +72,8 @@ public class BarcodeServiceImpl implements BarcodeService {
                 return ToBarcodeResponseDTO.algorithmNotFound(algUpperName);
             }
             // Check client-algorithm access
-            String specValue = clientDAO.getValueByClientAlgorithm(client, algorithm);
-            if (specValue == null) {
+            Client2algorithm c2a = clientDAO.getDataByClientAlgorithm(client, algorithm);
+            if (c2a == null) {
                 log.warn("Client '{}' doesn't have access to use algorithm '{}'", cltUpperCode, algUpperName);
                 return ToBarcodeResponseDTO.clientAlgorithmNotBind(client.getCode(), algorithm.getName());
             }
@@ -80,9 +84,9 @@ public class BarcodeServiceImpl implements BarcodeService {
             // or barcode to value
             Function<String, String> generateValueFunc = null;
             if (!isParse) {
-                generateValueFunc = BarcodeFuncFactory.toBarcode(algorithm, specValue);
+                generateValueFunc = BarcodeFuncFactory.toBarcode(tasks, algorithm, c2a);
             } else {
-                generateValueFunc = BarcodeFuncFactory.fromBarcode(algorithm, specValue);
+                generateValueFunc = BarcodeFuncFactory.fromBarcode(tasks, algorithm, c2a);
             }
             for (String value : requestBody.getValues()) {
                 String pattern = !isParse ? algorithm.getInPattern() : algorithm.getOutPattern();

@@ -17,7 +17,6 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
         DataSourceTransactionManagerAutoConfiguration.class,
         HibernateJpaAutoConfiguration.class })
 public class Starter extends SpringBootServletInitializer {
-
 //    public static void main(String[] args) {
 //        SpringApplication.run(applicationClass, args);
 //    }

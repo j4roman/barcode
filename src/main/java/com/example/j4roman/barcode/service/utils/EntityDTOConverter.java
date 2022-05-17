@@ -8,6 +8,7 @@ import com.example.j4roman.barcode.persistance.entities.Action;
 import com.example.j4roman.barcode.persistance.entities.BCAlgorithm;
 import com.example.j4roman.barcode.service.dto.manage.Client2algorithmDTO;
 import com.example.j4roman.barcode.service.dto.manage.ClientDTO;
+import com.example.j4roman.barcode.service.utils.tasks.Tasks;
 
 import java.util.ArrayList;
 import java.util.Map;
