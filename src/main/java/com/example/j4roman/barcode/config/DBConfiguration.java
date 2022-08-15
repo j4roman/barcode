@@ -20,7 +20,7 @@ public class DBConfiguration {
     private static final Logger log = LoggerFactory.getLogger(DBConfiguration.class);
 
     @Autowired
-    private SpringDataSourceProperies springDataSourceProperies;
+    private SpringDataSourceProperties springDataSourceProperties;
 
     @Autowired
     private HibernateProperties hibernateProperties;
@@ -30,11 +30,11 @@ public class DBConfiguration {
     public DataSource getDataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
 
-        dataSource.setDriverClassName(springDataSourceProperies.getDriverClassName());
-        dataSource.setUrl(springDataSourceProperies.getUrl());
-        dataSource.setUsername(springDataSourceProperies.getUsername());
-        dataSource.setPassword(springDataSourceProperies.getPassword());
-        log.info("dataSource is initialized with {}", springDataSourceProperies);
+        dataSource.setDriverClassName(springDataSourceProperties.getDriverClassName());
+        dataSource.setUrl(springDataSourceProperties.getUrl());
+        dataSource.setUsername(springDataSourceProperties.getUsername());
+        dataSource.setPassword(springDataSourceProperties.getPassword());
+        log.info("dataSource is initialized with {}", springDataSourceProperties);
         return dataSource;
     }
 

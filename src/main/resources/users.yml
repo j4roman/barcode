@@ -4,9 +4,9 @@ users:
       role: ADMIN
       ips:
         - 172.17.0.1
-        - 172.0.0.2
+        - 192.168.0.1
     - auth-name: user2
       role: USER
       ips:
         - 172.17.0.1
-        - 172.0.0.2
+        - 192.168.0.1

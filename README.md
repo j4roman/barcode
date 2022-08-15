@@ -68,13 +68,20 @@ users:
 ```
 
 ## Database
-Tests on: `Oracle Database 12c Enterprise Edition Release 12.2.0.1.0 - 64bit Production`  
-Database scripts: [barcode_db_scripts.sql](/misc/barcode_db_scripts.sql)
+`postgres (PostgreSQL) 14.4 (Debian 14.4-1.pgdg110+1)`  
+Scripts: [barcode_postgres_scripts.sql](/misc/barcode_postgres_scripts.sql)
+
+`Oracle Database 12c Enterprise Edition Release 12.2.0.1.0 - 64bit Production`  
+Scripts: [barcode_oracledb_scripts.sql](/misc/barcode_oracledb_scripts.sql)
 
 ![Database image](/misc/barcode_db_schema.jpg)
 
 ## Swagger
 The swagger can be viewed here [barcode.yaml](/misc/barcode.yaml)
+
+## Docker
+[docker-compose.yml](/docker-compose.yml)
+Dockerfile for the web service[Dockerfile](/Dockerfile)
 
 ## Request and response examples
 
@@ -419,14 +426,17 @@ Error handling may be changed in the future.
 [pom.xml](pom.xml)
 
 - Spring Boot 2.5.3
+  - Starter
   - Web
+  - Security
 - Hibernate (Spring Boot)
 - Slf4j (Spring Boot Logback)
 
-### Applications
-- IntelliJ IDEA 2020.1 (Community Edition)
+### Used applications
+- IntelliJ IDEA 2022.2 (Community Edition)
 - Oracle SQL Developer 19.2.1.247
-- SoaupUI 5.5.0
-- Docker 20.10.6
+- DbVisualizer Free 13.0.4 (build: 3296)
+- SoapUI 5.5.0
+- Docker 20.10.17
 - Apache Tomcat/9.0.50
 - TortoiseGit 2.8.0.0 (git version 2.23.0)

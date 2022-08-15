@@ -1,3 +1,12 @@
+spring:
+  config:
+    activate:
+      on-profile: oracle-dev
+  mvc:
+    throw-exception-if-no-handler-found: true
+  resources:
+    add-mappings: false
+
 spring-datasource:
   driverClassName: oracle.jdbc.driver.OracleDriver
   url: jdbc:oracle:thin:@//host.docker.internal:1521/ORCLEDUDB
@@ -11,8 +20,26 @@ hibernate-props:
     'current_session_context_class': org.springframework.orm.hibernate5.SpringSessionContext
     'hibernate.hbm2ddl.auto': none
 
+---
+
 spring:
+  config:
+    activate:
+      on-profile: postgres-dev
   mvc:
     throw-exception-if-no-handler-found: true
   resources:
     add-mappings: false
+
+spring-datasource:
+  driverClassName: org.postgresql.Driver
+  url: jdbc:postgresql://postgres-host:5432/wsbarcode_db
+  username: wsbarcode_user
+  password: wsbarcodepass
+
+hibernate-props:
+  key-value:
+    'hibernate.dialect': org.hibernate.dialect.PostgreSQLDialect
+    'hibernate.show_sql': false
+    'current_session_context_class': org.springframework.orm.hibernate5.SpringSessionContext
+    'hibernate.hbm2ddl.auto': none
