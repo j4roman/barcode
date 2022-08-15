@@ -1,0 +1,41 @@
+version: "3.8"
+services:
+  postgresdb:
+    image: postgres:14.4
+    container_name: postgresdb
+    environment:
+      POSTGRES_PASSWORD: mypass
+    healthcheck:
+      test: [ "CMD", "pg_isready", "-q", "-d", "postgres", "-U", "postgres" ]
+      timeout: 45s
+      interval: 10s
+      retries: 10
+    ports:
+      - 5432:5432
+    volumes:
+      - ./misc/barcode_postgres_scripts.sql:/docker-entrypoint-initdb.d/barcode_postgres_scripts.sql
+    networks:
+      wsbarcodenet:
+        aliases:
+         - postgres-host
+  ws:
+    build:
+      context: .
+    depends_on:
+      postgresdb:
+        condition: service_healthy
+    container_name: barcode
+    environment:
+      SPRING_PROFILES_ACTIVE: postgres-dev
+    ports:
+      - 9000:8080
+    networks:
+      wsbarcodenet:
+networks:
+  wsbarcodenet:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: "192.168.0.0/24"
+          gateway: "192.168.0.1"
